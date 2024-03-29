@@ -9,7 +9,7 @@ spec:
     region: us-west-2
     iam:
       roleArn: arn:aws:iam::094919933512:user/backstack
-    version: "1.29"
+    version: "1.28"
     nodes:
       count: 3
       instanceType: t3.small
