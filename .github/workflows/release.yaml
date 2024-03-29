@@ -146,5 +146,5 @@ jobs:
 
       - name: Publish Porter bundle
         run: |
-          porter publish --dir bundle --registry ${{ env.REGISTRY }}/backstack-internal
-          porter publish --dir bundle --registry ${{ env.REGISTRY }}/backstack-internal --tag latest --force
+          porter publish --dir bundle
+          porter publish --dir bundle --tag latest --force
