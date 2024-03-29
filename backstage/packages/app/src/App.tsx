@@ -35,7 +35,24 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
+import { googleAuthApi } from '@backstage/core-plugin-api';
+import { SignInPage } from '@backstage/core-components';
+
 const app = createApp({
+  components: {
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        provider={{
+          id: 'google',
+          title: 'Google',
+          message: 'Sign in using Google',
+          apiRef: googleAuthApi,
+        }}
+      />
+    ),
+  },
   apis,
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
