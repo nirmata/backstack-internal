@@ -35,7 +35,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
-import { googleAuthApi } from '@backstage/core-plugin-api';
+import { googleAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
 
 const app = createApp({
@@ -48,7 +48,7 @@ const app = createApp({
           id: 'google',
           title: 'Google',
           message: 'Sign in using Google',
-          apiRef: googleAuthApi,
+          apiRef: googleAuthApiRef,
         }}
       />
     ),
