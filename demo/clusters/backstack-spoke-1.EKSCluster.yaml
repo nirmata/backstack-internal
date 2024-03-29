@@ -1,0 +1,21 @@
+apiVersion: backstack.dev/v1alpha1
+kind: EKSCluster
+metadata:
+  name: backstack-spoke-1
+  namespace: default
+spec:
+  parameters:
+    id: backstack-spoke-1
+    region: us-west-2
+    iam:
+      roleArn: arn:aws:iam::094919933512:user/backstack
+    version: "1.29"
+    nodes:
+      count: 3
+      instanceType: t3.small
+  writeConnectionSecretToRef:
+    name: backstack-spoke-1-kubeconfig
+  publishConnectionDetailsTo:
+    name: backstack-spoke-1/backstack-spoke-1-kubeconfig
+    configRef:
+      name: vault
