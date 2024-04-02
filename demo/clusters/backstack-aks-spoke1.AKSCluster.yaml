@@ -1,13 +1,13 @@
 apiVersion: backstack.dev/v1alpha1
 kind: AKSCluster
 metadata:
-  name: backstack-aks
+  name: backstack-aks-spoke1
   namespace: default
 spec:
   parameters:
-    id: backstack-aks
+    id: backstack-aks-spoke1
     region: Central India
-    version: 1.27.3
+    version: 1.28.5
     nodes:
       count: 3
       instanceType: Standard_B2s
