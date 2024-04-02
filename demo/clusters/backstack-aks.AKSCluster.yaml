@@ -1,0 +1,19 @@
+apiVersion: backstack.dev/v1alpha1
+kind: AKSCluster
+metadata:
+  name: backstack-aks
+  namespace: default
+spec:
+  parameters:
+    id: backstack-aks
+    region: Central India
+    version: 1.27.3
+    nodes:
+      count: 3
+      instanceType: Standard_B2s
+  writeConnectionSecretToRef:
+    name: backstack-aks-kubeconfig
+  publishConnectionDetailsTo:
+    name: backstack-aks/backstack-aks-kubeconfig
+    configRef:
+      name: vault
