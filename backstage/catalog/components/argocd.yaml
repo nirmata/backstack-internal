@@ -1,12 +1,12 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  annotations: 
+  annotations:
     backstage.io/kubernetes-label-selector: app.kubernetes.io/part-of=argocd
   name: argocd
   description: Gitops Platform
   links:
-    - url: https://argocd-7f000001.nip.io
+    - url: https://argo.backstack.nirmata.co
       title: ArgoCD Dashboard
       icon: dashboard
 spec:
