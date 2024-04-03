@@ -70,7 +70,7 @@ spec:
         url: ./skeleton
         targetPath: demo/clusters
         values:
-          cluster_id: ${{ parameters.cluster_id }}
+          cluster_id: spoke-${{ parameters.cluster_id }}
           region: ${{ parameters.region }}
           version: ${{ parameters.version }}
           nodes_count: ${{ parameters.nodes_count }}
