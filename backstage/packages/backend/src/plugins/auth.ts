@@ -53,7 +53,7 @@ export default async function createPlugin(
         signIn: {
           resolver: providers.google.resolvers.emailLocalPartMatchingUserEntityName(),
         },
-      });
+      }),
     },
   });
 }
