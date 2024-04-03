@@ -82,7 +82,7 @@ spec:
         allowedHosts: ['github.com']
         title: Request for new cluster
         description: |
-          Cluster ID: ${{ parameters.cluster_id }}
+          Cluster ID: spoke-${{ parameters.cluster_id }}
           Region:     ${{ parameters.region }}
           Version:    ${{ parameters.version }}
           Nodes:      ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
