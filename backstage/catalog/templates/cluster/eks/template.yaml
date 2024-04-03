@@ -77,7 +77,7 @@ spec:
         url: ./skeleton
         targetPath: demo/clusters
         values:
-          cluster_id: ${{ parameters.cluster_id }}
+          cluster_id: spoke-${{ parameters.cluster_id }}
           region: ${{ parameters.region }}
           version: ${{ parameters.version }}
           iam_role_arn: ${{ parameters.iam_role_arn }}
@@ -90,7 +90,7 @@ spec:
         allowedHosts: ['github.com']
         title: Request for new cluster
         description: |
-          Cluster ID: ${{ parameters.cluster_id }}
+          Cluster ID: spoke-${{ parameters.cluster_id }}
           Region:     ${{ parameters.region }}
           Version:    ${{ parameters.version }}
           Nodes:      ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
