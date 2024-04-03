@@ -53,7 +53,7 @@ spec:
         custom_kyverno_policies:
           title: Custom Policy Repository Location
           type: string
-          description: The source repository of the custome Kyverno policies specific to the cluster
+          description: The source repository of the custom Kyverno policies specific to the cluster
     - title: Destination
       required:
         - repo_url
