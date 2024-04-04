@@ -148,7 +148,6 @@ mixins:
         vault:
           url: https://helm.releases.hashicorp.com
 
-
 # Define the steps that should execute when the bundle is installed
 install:
   - exec:
@@ -159,9 +158,10 @@ install:
   - helm3:
       description: "Install ingress-nginx"
       name: ingress-nginx
-      namespace: ingress-nginx
+      namespace: backstack-ingress-nginx
       chart: ingress-nginx/ingress-nginx
-      version: 4.8.3
+      # need to set this up as a macro that can get populated from an external process
+      version: 4.10.0
       wait: true
       values:
         - ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
