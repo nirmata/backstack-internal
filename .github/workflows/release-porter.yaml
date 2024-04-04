@@ -52,7 +52,7 @@ jobs:
 
       - name: Build Porter bundle
         run: |
-          porter build --dir bundle --version $BACK_STACK_VERSION+${{ steps.tag.outputs.VERSION_TAG }}
+          porter build --dir bundle --version ${{env.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
 
       - name: Publish Porter bundle
         run: |

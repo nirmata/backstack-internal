@@ -1,6 +1,6 @@
 schemaType: Bundle
 schemaVersion: 1.0.1
-registry: "ghcr.io/nirmata/backstack-internal"
+registry: "ghcr.io/nirmata"
 name: backstack-porter-install
 description: "The BACK stack showcase bundle"
 
