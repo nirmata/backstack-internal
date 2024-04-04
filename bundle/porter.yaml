@@ -137,6 +137,17 @@ mixins:
           url: https://charts.crossplane.io/stable
         ingress-nginx:
           url: https://kubernetes.github.io/ingress-nginx
+        argocd:
+          url: https://argoproj.github.io/argo-helm
+        kyverno:
+          url: https://kyverno.github.io/kyverno/
+        cert-manager:
+          url: https://charts.jetstack.io
+        backstage:
+          url: https://backstage.github.io/charts
+        vault:
+          url: https://helm.releases.hashicorp.com
+
 
 # Define the steps that should execute when the bundle is installed
 install:
