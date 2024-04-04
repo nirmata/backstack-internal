@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set tag
-        run: echo "VERSION_TAG=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+        run: echo "VERSION_TAG=$(git rev-parse --short=7 HEAD)" >> $GITHUB_OUTPUT
         id: tag
 
       - name: Log in to the Container registry
