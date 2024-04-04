@@ -28,3 +28,5 @@ spec:
       version: ">=v0.37.1"
     - provider: xpkg.upbound.io/upbound/provider-azure-network
       version: ">=v0.37.1"
+    - provider: xpkg.upbound.io/upbound/provider-gcp-gke
+      version: ">=v1.0.2"
