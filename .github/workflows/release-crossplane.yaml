@@ -50,5 +50,5 @@ jobs:
 
       - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-configuration:${{env.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-configuration:latest
+          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:${{env.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
+          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:latest

@@ -1,7 +1,7 @@
 schemaType: Bundle
 schemaVersion: 1.0.1
 registry: "ghcr.io/nirmata"
-name: backstack-porter-install
+name: backstack-porter
 description: "The BACK stack showcase bundle"
 
 dockerfile: template.Dockerfile
