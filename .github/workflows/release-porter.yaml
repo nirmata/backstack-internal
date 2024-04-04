@@ -9,7 +9,6 @@ on:
   workflow_dispatch: {}
 
 env:
-  BACK_STACK_VERSION: v0.1.0
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PORTER_VERSION: v1.0.16
