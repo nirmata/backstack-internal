@@ -74,7 +74,19 @@ spec:
                   params:
                     server.insecure: true
                   cm:
+                    dex.config: |
+                      connectors:
+                      - config:
+                          issuer: https://accounts.google.com
+                          clientID: {ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+                          clientSecret: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
+                        type: oidc
+                        id: google
+                        name: Google
+                    exec.enabled: "false"
+                    server.rbac.log.enforce.enable: "false"
                     application.resourceTrackingMethod: annotation
+                    # url: added as patch set
                 server:
                   deploymentAnnotations:
                     backstage.io/kubernetes-id: argocd-service
@@ -97,6 +109,13 @@ spec:
         patches:
         - type: PatchSet
           patchSetName: target-cluster
+        - fromFieldPath: spec.parameters.argocd.host
+          toFieldPath: spec.forProvider.values.cm.url
+          transforms:
+          - type: string
+            string:
+              type: Format
+              fmt: "https://%s"
         - fromFieldPath: spec.parameters.argocd.host
           toFieldPath: spec.forProvider.values.server.ingress.hosts[0]
         - fromFieldPath: spec.parameters.argocd.host
@@ -359,8 +378,8 @@ spec:
                       providers:
                         google:
                           prod:
-                            clientId: ${GOOGLE_AUTH_CLIENT_ID}
-                            clientSecret: ${GOOGLE_AUTH_CLIENT_SECRET}
+                            clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+                            clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
                     scaffolder:
                     catalog:
                       import:

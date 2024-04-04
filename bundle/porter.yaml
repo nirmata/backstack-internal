@@ -33,12 +33,23 @@ credentials:
   # optional Google auth for Backstage
   - name: backstage-google-auth-client-id
     required: false
-    env: ${GOOGLE_AUTH_CLIENT_ID}
+    env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
     applyTo:
       - install
   - name: backstage-google-auth-client-secret
     required: false
-    env: ${GOOGLE_AUTH_CLIENT_SECRET}
+    env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+    applyTo:
+      - install
+  # optional Google auth for Argo
+  - name: argocd-google-auth-client-id
+    required: false
+    env: ${ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+    applyTo:
+      - install
+  - name: argocd-google-auth-client-secret
+    required: false
+    env: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
     applyTo:
       - install
 
