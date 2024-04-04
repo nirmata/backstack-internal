@@ -1,8 +1,6 @@
-schemaType: Bundle
-schemaVersion: 1.0.1
 registry: "ghcr.io"
 name: backstack-porter
-description: "The BACK stack showcase bundle"
+description: "The BACK Stack hub cluster installation"
 
 dockerfile: template.Dockerfile
 
@@ -17,10 +15,12 @@ credentials:
     applyTo:
       - install
   - name: azure-credentials
+    required: false
     env: AZURE_CREDENTIALS
     applyTo:
       - install
   - name: aws-credentials
+    required: false
     env: AWS_CREDENTIALS
     applyTo:
       - install
@@ -52,6 +52,14 @@ credentials:
     env: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
     applyTo:
       - install
+  # Since these annotations can contain potentially sensitive information such as
+  # Account numbers, certificate numbers, etc. It is better they are passed in as
+  # a credential rather than as a parameter
+  - name: ingress-controller-annotations
+    required: false
+    env: ${INGRESS_CONTROLLER_CUSTOM_ANNOTATIONS}
+    applyTo:
+      - install
 
 parameters:
   - name: cluster-type
@@ -79,6 +87,23 @@ parameters:
     env: VAULT_HOST
     type: string
     default: vault-7f000001.nip.io
+  - name: argo-google-auth
+    env: ARGO_GOOGLE_AUTH
+    type: string
+    default: false
+  - name: backstage-google-auth
+    env: BACKSTAGE_GOOGLE_AUTH
+    type: string
+    default: false
+  - name: deploy-ingress-controller
+    env: DEPLOY_INGRESS_CONTROLLER
+    type: string
+    default: true
+  # This would be a link to manifest repo
+  - name: kyverno-custom-policies-repo
+    env: KYVERNO_CUSTOM_POLICIES
+    type: string
+    default: no_custom_policies
 
 outputs:
   - name: kubeconfig

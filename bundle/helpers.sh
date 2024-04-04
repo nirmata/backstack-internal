@@ -2,10 +2,10 @@
 set -euo pipefail
 K8S_CFG_INTERNAL=/home/nonroot/.kube/config
 K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
-CLUSTER_NAME=backstack
+CLUSTER_NAME=backstack-hub
 
 validate_providers() {
-  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure},aws-{ec2,eks,iam},azure-{containerservice,network}}}; do
+  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-{gke}}}; do
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
   done
 }
