@@ -359,8 +359,8 @@ spec:
                       providers:
                         google:
                           prod:
-                            clientId: 333570323450-bbl36sbil9849ciq1ee1dj8nnrt3r1tm.apps.googleusercontent.com
-                            clientSecret: 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
+                            clientId: ${GOOGLE_AUTH_CLIENT_ID}
+                            clientSecret: ${GOOGLE_AUTH_CLIENT_SECRET}
                     scaffolder:
                     catalog:
                       import:
