@@ -1,25 +1,25 @@
-apiVersion: apiextensions.crossplane.io/v1
-kind: Composition
-metadata:
-  name: default-xhub.backstack.dev
-spec:
-  compositeTypeRef:
-    apiVersion: backstack.dev/v1alpha1
-    kind: XHub
-  mode: Pipeline
-  pipeline:
-  - step: patch-and-transform
-    functionRef:
-      name: crossplane-contrib-function-patch-and-transform
-    input:
-      apiVersion: pt.fn.crossplane.io/v1beta1
-      kind: Resources
-      patchSets:
-      - name: target-cluster
-        patches:
-        - fromFieldPath: spec.parameters.clusterId
-          toFieldPath: spec.providerConfigRef.name
-      resources:
+# apiVersion: apiextensions.crossplane.io/v1
+# kind: Composition
+# metadata:
+#   name: default-xhub.backstack.dev
+# spec:
+#   compositeTypeRef:
+#     apiVersion: backstack.dev/v1alpha1
+#     kind: XHub
+#   mode: Pipeline
+#   pipeline:
+#   - step: patch-and-transform
+#     functionRef:
+#       name: crossplane-contrib-function-patch-and-transform
+#     input:
+#       apiVersion: pt.fn.crossplane.io/v1beta1
+#       kind: Resources
+#       patchSets:
+#       - name: target-cluster
+#         patches:
+#         - fromFieldPath: spec.parameters.clusterId
+#           toFieldPath: spec.providerConfigRef.name
+#       resources:
       # - name: cert-manager
       #   base:
       #     apiVersion: helm.crossplane.io/v1beta1
@@ -55,266 +55,266 @@ spec:
       #   patches:
       #   - type: PatchSet
       #     patchSetName: target-cluster
-      - name: argocd
-        base:
-          apiVersion: helm.crossplane.io/v1beta1
-          kind: Release
-          metadata:
-            annotations:
-              crossplane.io/external-name: argo-cd
-          spec:
-            forProvider:
-              namespace: argocd
-              chart:
-                name: argo-cd
-                repository: https://argoproj.github.io/argo-helm
-                version: 5.55.0
-              values:
-                configs:
-                  params:
-                    server.insecure: true
-                  cm:
-                    dex.config: |
-                      connectors:
-                      - config:
-                          issuer: https://accounts.google.com
-                          clientID: {ARGOCD_GOOGLE_AUTH_CLIENT_ID}
-                          clientSecret: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
-                        type: oidc
-                        id: google
-                        name: Google
-                    exec.enabled: "false"
-                    server.rbac.log.enforce.enable: "false"
-                    application.resourceTrackingMethod: annotation
-                    # url: added as patch set
-                server:
-                  deploymentAnnotations:
-                    backstage.io/kubernetes-id: argocd-service
-                  ingress:
-                    enabled: true
-                    ingressClassName: nginx
-                    annotations:
-                      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-                      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-                    hosts:
-                    - hostname # patched
-                  ingressGrpc:
-                    enabled: true
-                    ingressClassName: nginx
-                    annotations:
-                      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-                      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-                    hosts:
-                    - grpc.hostname # patched
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-        - fromFieldPath: spec.parameters.argocd.host
-          toFieldPath: spec.forProvider.values.cm.url
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "https://%s"
-        - fromFieldPath: spec.parameters.argocd.host
-          toFieldPath: spec.forProvider.values.server.ingress.hosts[0]
-        - fromFieldPath: spec.parameters.argocd.host
-          toFieldPath: spec.forProvider.values.server.ingress.tls[0].hosts[0]
-        - fromFieldPath: spec.parameters.argocd.host
-          toFieldPath: spec.forProvider.values.server.ingressGrpc.hosts[0]
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "grpc.%s"
-        - fromFieldPath: spec.parameters.argocd.host
-          toFieldPath: spec.forProvider.values.server.ingressGrpc.tls[0].hosts[0]
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "grpc.%s"
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "%s-argocd"
-      - name: argocd-applications-application
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: argoproj.io/v1alpha1
-                kind: Application
-                metadata:
-                  name: apps-from-hub
-                  namespace: argocd
-                spec:
-                  project: default
-                  source:
-                    repoURL: repository # patched
-                    path: demo/applications
-                    targetRevision: HEAD
-                  destination:
-                    name: hub
-                    namespace: default
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-        - fromFieldPath: spec.parameters.repository
-          toFieldPath: spec.forProvider.manifest.spec.source.repoURL
-      - name: argocd-clusters-application
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: argoproj.io/v1alpha1
-                kind: Application
-                metadata:
-                  name: clusters-from-hub
-                  namespace: argocd
-                spec:
-                  project: default
-                  source:
-                    repoURL: repository # patched
-                    path: demo/clusters
-                    targetRevision: HEAD
-                  destination:
-                    name: hub
-                    namespace: default
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-        - fromFieldPath: spec.parameters.repository
-          toFieldPath: spec.forProvider.manifest.spec.source.repoURL
-      - name: argocd-kyverno-applicationset
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: argoproj.io/v1alpha1
-                kind: ApplicationSet
-                metadata:
-                  name: kyverno
-                  namespace: argocd
-                spec:
-                  generators:
-                  - clusters:
-                      selector:
-                        matchLabels:
-                          clusterType: spoke
-                  template:
-                    metadata:
-                      name: '{{name}}-kyverno'
-                      annotations:
-                        argocd.argoproj.io/sync-wave: "1"
-                    spec:
-                      project: "default"
-                      source:
-                        repoURL: https://github.com/kyverno/kyverno
-                        targetRevision: release-1.11
-                        path: charts/kyverno
-                        helm:
-                          releaseName: "{{name}}-kyverno"
-                          valueFiles:
-                          - "values.yaml"
-                      destination:
-                        server: '{{server}}'
-                        namespace: kyverno
-                      syncPolicy:
-                        syncOptions:
-                        - Replace=true
-                        - CreateNamespace=true
-                        automated:
-                          selfHeal: true
-                        retry:
-                          limit: 30
-                          backoff:
-                            duration: 5s
-                            factor: 2
-                            maxDuration: 3m0s
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-      - name: argocd-kyverno-policies-applicationset
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: argoproj.io/v1alpha1
-                kind: ApplicationSet
-                metadata:
-                  name: kyverno-policies
-                  namespace: argocd
-                spec:
-                  generators:
-                  - clusters:
-                      selector:
-                        matchLabels:
-                          clusterType: spoke
-                  template:
-                    metadata:
-                      name: '{{name}}-kyverno-policies'
-                      annotations:
-                        argocd.argoproj.io/sync-wave: "1"
-                    spec:
-                      project: "default"
-                      source:
-                        repoURL: https://github.com/kyverno/kyverno
-                        targetRevision: release-1.11
-                        path: charts/kyverno-policies
-                        helm:
-                          releaseName: "{{name}}-kyverno-policies"
-                          valueFiles:
-                          - "values.yaml"
-                      destination:
-                        server: '{{server}}'
-                        namespace: kyverno
-                      syncPolicy:
-                        syncOptions:
-                        - Replace=true
-                        automated:
-                          selfHeal: true
-                        retry:
-                          limit: 30
-                          backoff:
-                            duration: 5s
-                            factor: 2
-                            maxDuration: 3m0s
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-      - name: argocd-hub-secret
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: v1
-                kind: Secret
-                metadata:
-                  labels:
-                    argocd.argoproj.io/secret-type: cluster
-                  name: hub
-                  namespace: argocd
-                data:
-                  name: aHVi # hub
-                  server: aHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3Zj # https://kubernetes.default.svc
-                  config: eyJ0bHNDbGllbnRDb25maWciOnsiaW5zZWN1cmUiOmZhbHNlfX0= #'{"tlsClientConfig":{"insecure":false}}'
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
+      # - name: argocd
+      #   base:
+      #     apiVersion: helm.crossplane.io/v1beta1
+      #     kind: Release
+      #     metadata:
+      #       annotations:
+      #         crossplane.io/external-name: argo-cd
+      #     spec:
+      #       forProvider:
+      #         namespace: argocd
+      #         chart:
+      #           name: argo-cd
+      #           repository: https://argoproj.github.io/argo-helm
+      #           version: 5.55.0
+      #         values:
+      #           configs:
+      #             params:
+      #               server.insecure: true
+      #             cm:
+      #               dex.config: |
+      #                 connectors:
+      #                 - config:
+      #                     issuer: https://accounts.google.com
+      #                     clientID: {ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+      #                     clientSecret: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
+      #                   type: oidc
+      #                   id: google
+      #                   name: Google
+      #               exec.enabled: "false"
+      #               server.rbac.log.enforce.enable: "false"
+      #               application.resourceTrackingMethod: annotation
+      #               # url: added as patch set
+      #           server:
+      #             deploymentAnnotations:
+      #               backstage.io/kubernetes-id: argocd-service
+      #             ingress:
+      #               enabled: true
+      #               ingressClassName: nginx
+      #               annotations:
+      #                 nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      #                 cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      #               hosts:
+      #               - hostname # patched
+      #             ingressGrpc:
+      #               enabled: true
+      #               ingressClassName: nginx
+      #               annotations:
+      #                 nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+      #                 cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      #               hosts:
+      #               - grpc.hostname # patched
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      #   - fromFieldPath: spec.parameters.argocd.host
+      #     toFieldPath: spec.forProvider.values.cm.url
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "https://%s"
+      #   - fromFieldPath: spec.parameters.argocd.host
+      #     toFieldPath: spec.forProvider.values.server.ingress.hosts[0]
+      #   - fromFieldPath: spec.parameters.argocd.host
+      #     toFieldPath: spec.forProvider.values.server.ingress.tls[0].hosts[0]
+      #   - fromFieldPath: spec.parameters.argocd.host
+      #     toFieldPath: spec.forProvider.values.server.ingressGrpc.hosts[0]
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "grpc.%s"
+      #   - fromFieldPath: spec.parameters.argocd.host
+      #     toFieldPath: spec.forProvider.values.server.ingressGrpc.tls[0].hosts[0]
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "grpc.%s"
+      #   - fromFieldPath: metadata.name
+      #     toFieldPath: metadata.name
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "%s-argocd"
+      # - name: argocd-applications-application
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: argoproj.io/v1alpha1
+      #           kind: Application
+      #           metadata:
+      #             name: apps-from-hub
+      #             namespace: argocd
+      #           spec:
+      #             project: default
+      #             source:
+      #               repoURL: repository # patched
+      #               path: demo/applications
+      #               targetRevision: HEAD
+      #             destination:
+      #               name: hub
+      #               namespace: default
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      #   - fromFieldPath: spec.parameters.repository
+      #     toFieldPath: spec.forProvider.manifest.spec.source.repoURL
+      # - name: argocd-clusters-application
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: argoproj.io/v1alpha1
+      #           kind: Application
+      #           metadata:
+      #             name: clusters-from-hub
+      #             namespace: argocd
+      #           spec:
+      #             project: default
+      #             source:
+      #               repoURL: repository # patched
+      #               path: demo/clusters
+      #               targetRevision: HEAD
+      #             destination:
+      #               name: hub
+      #               namespace: default
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      #   - fromFieldPath: spec.parameters.repository
+      #     toFieldPath: spec.forProvider.manifest.spec.source.repoURL
+      # - name: argocd-kyverno-applicationset
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: argoproj.io/v1alpha1
+      #           kind: ApplicationSet
+      #           metadata:
+      #             name: kyverno
+      #             namespace: argocd
+      #           spec:
+      #             generators:
+      #             - clusters:
+      #                 selector:
+      #                   matchLabels:
+      #                     clusterType: spoke
+      #             template:
+      #               metadata:
+      #                 name: '{{name}}-kyverno'
+      #                 annotations:
+      #                   argocd.argoproj.io/sync-wave: "1"
+      #               spec:
+      #                 project: "default"
+      #                 source:
+      #                   repoURL: https://github.com/kyverno/kyverno
+      #                   targetRevision: release-1.11
+      #                   path: charts/kyverno
+      #                   helm:
+      #                     releaseName: "{{name}}-kyverno"
+      #                     valueFiles:
+      #                     - "values.yaml"
+      #                 destination:
+      #                   server: '{{server}}'
+      #                   namespace: kyverno
+      #                 syncPolicy:
+      #                   syncOptions:
+      #                   - Replace=true
+      #                   - CreateNamespace=true
+      #                   automated:
+      #                     selfHeal: true
+      #                   retry:
+      #                     limit: 30
+      #                     backoff:
+      #                       duration: 5s
+      #                       factor: 2
+      #                       maxDuration: 3m0s
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      # - name: argocd-kyverno-policies-applicationset
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: argoproj.io/v1alpha1
+      #           kind: ApplicationSet
+      #           metadata:
+      #             name: kyverno-policies
+      #             namespace: argocd
+      #           spec:
+      #             generators:
+      #             - clusters:
+      #                 selector:
+      #                   matchLabels:
+      #                     clusterType: spoke
+      #             template:
+      #               metadata:
+      #                 name: '{{name}}-kyverno-policies'
+      #                 annotations:
+      #                   argocd.argoproj.io/sync-wave: "1"
+      #               spec:
+      #                 project: "default"
+      #                 source:
+      #                   repoURL: https://github.com/kyverno/kyverno
+      #                   targetRevision: release-1.11
+      #                   path: charts/kyverno-policies
+      #                   helm:
+      #                     releaseName: "{{name}}-kyverno-policies"
+      #                     valueFiles:
+      #                     - "values.yaml"
+      #                 destination:
+      #                   server: '{{server}}'
+      #                   namespace: kyverno
+      #                 syncPolicy:
+      #                   syncOptions:
+      #                   - Replace=true
+      #                   automated:
+      #                     selfHeal: true
+      #                   retry:
+      #                     limit: 30
+      #                     backoff:
+      #                       duration: 5s
+      #                       factor: 2
+      #                       maxDuration: 3m0s
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      # - name: argocd-hub-secret
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: v1
+      #           kind: Secret
+      #           metadata:
+      #             labels:
+      #               argocd.argoproj.io/secret-type: cluster
+      #             name: hub
+      #             namespace: argocd
+      #           data:
+      #             name: aHVi # hub
+      #             server: aHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3Zj # https://kubernetes.default.svc
+      #             config: eyJ0bHNDbGllbnRDb25maWciOnsiaW5zZWN1cmUiOmZhbHNlfX0= #'{"tlsClientConfig":{"insecure":false}}'
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
       # - name: backstage
       #   base:
       #     apiVersion: helm.crossplane.io/v1beta1

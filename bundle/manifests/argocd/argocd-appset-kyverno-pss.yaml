@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kyverno-policies
+  namespace: argocd
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          clusterType: spoke
+  template:
+    metadata:
+      name: '{{name}}-kyverno-policies'
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/kyverno/kyverno
+        targetRevision: release-1.11
+        path: charts/kyverno-policies
+        helm:
+          releaseName: "{{name}}-kyverno-policies"
+          # TODO: figure out how to pass in strict defaults here and make it configurable
+          parameters:
+            - name: "podSecurityStandard"
+              value: restricted
+            - name: "validationFailureAction"
+              value: Enforce
+            - name: "podSecuritySeverity"
+              value: High
+      destination:
+        server: '{{server}}'
+        namespace: kyverno
+      syncPolicy:
+        syncOptions:
+        - Replace=true
+        automated:
+          selfHeal: true
+        retry:
+          limit: 30
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m0s
