@@ -59,9 +59,14 @@ credentials:
     path: /home/nonroot/ingress-nginx-custom.yaml
     applyTo:
       - install
-  - name: kyverno-custom-policies-repository
+  - name: kyverno-hub-custom-policies-repository
     required: false
-    env: ${KYVERNO_CUSTOM_POLICIES_REPOSITORY}
+    env: ${KYVERNO_HUB_CUSTOM_POLICIES_REPOSITORY}
+    applyTo:
+      - install
+  - name: kyverno-spoke-custom-policies-repository
+    required: false
+    env: ${KYVERNO_SPOKE_CUSTOM_POLICIES_REPOSITORY}
     applyTo:
       - install
 
