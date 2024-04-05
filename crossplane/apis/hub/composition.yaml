@@ -39,22 +39,22 @@ spec:
       #   patches:
       #   - type: PatchSet
       #     patchSetName: target-cluster
-      - name: selfsigned-cluster-issuer
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: cert-manager.io/v1
-                kind: ClusterIssuer
-                metadata:
-                  name: selfsigned-cluster-issuer
-                spec:
-                  selfSigned: {}
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
+      # - name: selfsigned-cluster-issuer
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: cert-manager.io/v1
+      #           kind: ClusterIssuer
+      #           metadata:
+      #             name: selfsigned-cluster-issuer
+      #           spec:
+      #             selfSigned: {}
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
       - name: argocd
         base:
           apiVersion: helm.crossplane.io/v1beta1
@@ -315,218 +315,218 @@ spec:
         patches:
         - type: PatchSet
           patchSetName: target-cluster
-      - name: backstage
-        base:
-          apiVersion: helm.crossplane.io/v1beta1
-          kind: Release
-          metadata:
-            annotations:
-              crossplane.io/external-name: backstage
-          spec:
-            forProvider:
-              namespace: backstage
-              chart:
-                name: backstage
-                repository: https://backstage.github.io/charts
-              values:
-                ingress:
-                  enabled: true
-                  className: nginx
-                  annotations:
-                    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-                  tls:
-                    enabled: true
-                    secretName: backstage-tls
-                backstage:
-                  image:
-                    registry: ghcr.io
-                    repository: nirmata/backstack-internal-backstage
-                    tag: latest
-                    pullPolicy: Always
-                  extraEnvVarsSecrets:
-                  - backstage
-                  appConfig:
-                    app:
-                      title: BACK Stack IDP
-                    organization:
-                      name: BACK Stack
-                    backend:
-                      listen:
-                        port: 7007
-                      csp:
-                        connect-src: ["'self'", 'http:', 'https:']
-                      cors:
-                        origin: http://localhost:3000
-                        methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
-                        credentials: true
-                      database:
-                        client: better-sqlite3
-                        connection: ':memory:'
-                    integrations:
-                      github:
-                        - host: github.com
-                          token: ${GITHUB_TOKEN}
-                    proxy:
-                    techdocs:
-                      builder: 'local' # Alternatives - 'external'
-                      generator:
-                        runIn: 'docker' # Alternatives - 'local'
-                      publisher:
-                        type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
-                    auth:
-                      environment: prod
-                      providers:
-                        google:
-                          prod:
-                            clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
-                            clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
-                    scaffolder:
-                    catalog:
-                      import:
-                        entityFilename: catalog-info.yaml
-                        pullRequestBranchName: backstage-integration
-                      locations:
-                        - type: url
-                          target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
-                          rules:
-                          - allow: [Group, User]
-                        - type: url
-                          target: repository # patched
-                          rules:
-                          - allow: [Component, API, Resource, Template, System]
-                    kubernetes:
-                      serviceLocatorMethod:
-                        type: multiTenant
-                      clusterLocatorMethods:
-                        - type: catalog
-                    vault:
-                      baseUrl: http://vault.vault.svc:8200
-                      publicUrl: hostname # patched
-                      token: ${VAULT_TOKEN}
-                      secretEngine: secret
-                      kvVersion: "2"
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-        - fromFieldPath: spec.parameters.backstage.host
-          toFieldPath: spec.forProvider.values.ingress.host
-        - fromFieldPath: spec.parameters.backstage.image
-          toFieldPath: spec.forProvider.values.backstage.image
-          policy:
-            fromFieldPath: Optional
-        - fromFieldPath: spec.parameters.backstage.host
-          toFieldPath: spec.forProvider.values.backstage.appConfig.app.baseUrl
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "https://%s"
-        - fromFieldPath: spec.parameters.backstage.host
-          toFieldPath: spec.forProvider.values.backstage.appConfig.backend.baseUrl
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "https://%s"
-        - fromFieldPath: spec.parameters.repository
-          toFieldPath: spec.forProvider.values.backstage.appConfig.catalog.locations[1].target
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "%s/blob/main/catalog-info.yaml"
-        - fromFieldPath: spec.parameters.vault.host
-          toFieldPath: spec.forProvider.values.backstage.appConfig.vault.publicUrl
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "https://%s"
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "%s-backstage"
-      - name: backstage-kubernetes-read-only-role
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: rbac.authorization.k8s.io/v1
-                kind: ClusterRole
-                metadata:
-                  name: backstage-read-only
-                rules:
-                  - apiGroups:
-                      - '*'
-                    resources:
-                      - pods
-                      - configmaps
-                      - services
-                      - deployments
-                      - replicasets
-                      - horizontalpodautoscalers
-                      - ingresses
-                      - statefulsets
-                      - limitranges
-                      - daemonsets
-                    verbs:
-                      - get
-                      - list
-                      - watch
-                  - apiGroups:
-                      - batch
-                    resources:
-                      - jobs
-                      - cronjobs
-                    verbs:
-                      - get
-                      - list
-                      - watch
-                  - apiGroups:
-                      - metrics.k8s.io
-                    resources:
-                      - pods
-                    verbs:
-                      - get
-                      - list
-                  - apiGroups:
-                      - backstack.dev
-                    resources:
-                      - '*'
-                    verbs:
-                      - get
-                      - list
-                      - watch
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-      - name: backstage-kubernetes-read-only-role-binding
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: rbac.authorization.k8s.io/v1
-                kind: ClusterRoleBinding
-                metadata:
-                  name: backstage-read-only
-                roleRef:
-                  apiGroup: rbac.authorization.k8s.io
-                  kind: ClusterRole
-                  name: backstage-read-only
-                subjects:
-                - kind: ServiceAccount
-                  name: default
-                  namespace: backstage
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
+      # - name: backstage
+      #   base:
+      #     apiVersion: helm.crossplane.io/v1beta1
+      #     kind: Release
+      #     metadata:
+      #       annotations:
+      #         crossplane.io/external-name: backstage
+      #     spec:
+      #       forProvider:
+      #         namespace: backstage
+      #         chart:
+      #           name: backstage
+      #           repository: https://backstage.github.io/charts
+      #         values:
+      #           ingress:
+      #             enabled: true
+      #             className: nginx
+      #             annotations:
+      #               cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      #             tls:
+      #               enabled: true
+      #               secretName: backstage-tls
+      #           backstage:
+      #             image:
+      #               registry: ghcr.io
+      #               repository: nirmata/backstack-internal-backstage
+      #               tag: latest
+      #               pullPolicy: Always
+      #             extraEnvVarsSecrets:
+      #             - backstage
+      #             appConfig:
+      #               app:
+      #                 title: BACK Stack IDP
+      #               organization:
+      #                 name: BACK Stack
+      #               backend:
+      #                 listen:
+      #                   port: 7007
+      #                 csp:
+      #                   connect-src: ["'self'", 'http:', 'https:']
+      #                 cors:
+      #                   origin: http://localhost:3000
+      #                   methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+      #                   credentials: true
+      #                 database:
+      #                   client: better-sqlite3
+      #                   connection: ':memory:'
+      #               integrations:
+      #                 github:
+      #                   - host: github.com
+      #                     token: ${GITHUB_TOKEN}
+      #               proxy:
+      #               techdocs:
+      #                 builder: 'local' # Alternatives - 'external'
+      #                 generator:
+      #                   runIn: 'docker' # Alternatives - 'local'
+      #                 publisher:
+      #                   type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+      #               auth:
+      #                 environment: prod
+      #                 providers:
+      #                   google:
+      #                     prod:
+      #                       clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+      #                       clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+      #               scaffolder:
+      #               catalog:
+      #                 import:
+      #                   entityFilename: catalog-info.yaml
+      #                   pullRequestBranchName: backstage-integration
+      #                 locations:
+      #                   - type: url
+      #                     target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+      #                     rules:
+      #                     - allow: [Group, User]
+      #                   - type: url
+      #                     target: repository # patched
+      #                     rules:
+      #                     - allow: [Component, API, Resource, Template, System]
+      #               kubernetes:
+      #                 serviceLocatorMethod:
+      #                   type: multiTenant
+      #                 clusterLocatorMethods:
+      #                   - type: catalog
+      #               vault:
+      #                 baseUrl: http://vault.vault.svc:8200
+      #                 publicUrl: hostname # patched
+      #                 token: ${VAULT_TOKEN}
+      #                 secretEngine: secret
+      #                 kvVersion: "2"
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      #   - fromFieldPath: spec.parameters.backstage.host
+      #     toFieldPath: spec.forProvider.values.ingress.host
+      #   - fromFieldPath: spec.parameters.backstage.image
+      #     toFieldPath: spec.forProvider.values.backstage.image
+      #     policy:
+      #       fromFieldPath: Optional
+      #   - fromFieldPath: spec.parameters.backstage.host
+      #     toFieldPath: spec.forProvider.values.backstage.appConfig.app.baseUrl
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "https://%s"
+      #   - fromFieldPath: spec.parameters.backstage.host
+      #     toFieldPath: spec.forProvider.values.backstage.appConfig.backend.baseUrl
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "https://%s"
+      #   - fromFieldPath: spec.parameters.repository
+      #     toFieldPath: spec.forProvider.values.backstage.appConfig.catalog.locations[1].target
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "%s/blob/main/catalog-info.yaml"
+      #   - fromFieldPath: spec.parameters.vault.host
+      #     toFieldPath: spec.forProvider.values.backstage.appConfig.vault.publicUrl
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "https://%s"
+      #   - fromFieldPath: metadata.name
+      #     toFieldPath: metadata.name
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "%s-backstage"
+      # - name: backstage-kubernetes-read-only-role
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: rbac.authorization.k8s.io/v1
+      #           kind: ClusterRole
+      #           metadata:
+      #             name: backstage-read-only
+      #           rules:
+      #             - apiGroups:
+      #                 - '*'
+      #               resources:
+      #                 - pods
+      #                 - configmaps
+      #                 - services
+      #                 - deployments
+      #                 - replicasets
+      #                 - horizontalpodautoscalers
+      #                 - ingresses
+      #                 - statefulsets
+      #                 - limitranges
+      #                 - daemonsets
+      #               verbs:
+      #                 - get
+      #                 - list
+      #                 - watch
+      #             - apiGroups:
+      #                 - batch
+      #               resources:
+      #                 - jobs
+      #                 - cronjobs
+      #               verbs:
+      #                 - get
+      #                 - list
+      #                 - watch
+      #             - apiGroups:
+      #                 - metrics.k8s.io
+      #               resources:
+      #                 - pods
+      #               verbs:
+      #                 - get
+      #                 - list
+      #             - apiGroups:
+      #                 - backstack.dev
+      #               resources:
+      #                 - '*'
+      #               verbs:
+      #                 - get
+      #                 - list
+      #                 - watch
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      # - name: backstage-kubernetes-read-only-role-binding
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: rbac.authorization.k8s.io/v1
+      #           kind: ClusterRoleBinding
+      #           metadata:
+      #             name: backstage-read-only
+      #           roleRef:
+      #             apiGroup: rbac.authorization.k8s.io
+      #             kind: ClusterRole
+      #             name: backstage-read-only
+      #           subjects:
+      #           - kind: ServiceAccount
+      #             name: default
+      #             namespace: backstage
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
       # - name: kyverno
       #   base:
       #     apiVersion: helm.crossplane.io/v1beta1

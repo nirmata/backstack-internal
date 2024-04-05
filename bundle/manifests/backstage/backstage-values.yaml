@@ -1,0 +1,16 @@
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+  tls:
+    enabled: true
+    secretName: backstage-tls
+backstage:
+  image:
+    registry: ghcr.io
+    repository: nirmata/backstack-internal-backstage
+    tag: latest
+    pullPolicy: Always
+  extraEnvVarsSecrets:
+  - backstage

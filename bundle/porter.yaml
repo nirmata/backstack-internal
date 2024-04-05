@@ -180,6 +180,10 @@ install:
       wait: true
       set:
         installCRDs: true
+  - kubernetes:
+      description: "Create cert-manager Self-Signed ClusterIssuer"
+      manifests:
+        - ./manifests/cert-manager/cert-manager-cluster-issuer.yaml
   - helm3:
       description: "Install ingress-nginx"
       name: ingress-nginx
@@ -235,19 +239,36 @@ install:
       description: "Create Crossplane StoreConfig"
       manifests:
         - ./manifests/vault/vault-corssplane-store.yaml
+  - helm3:
+      description: "Install Backstage"
+      name: backstage
+      namespace: backstage
+      chart: backstage/backstage
+      atomic: true
+      wait: true
+      values:
+        - ./manifests/backstage/backstage-values.yaml
+  - kubernetes:
+      description: "Create Backstage App-Config ConfigMap"
+      manifests:
+        - ./manifests/backstage/backstage-app-config.yaml
+  - kubernetes:
+      description: "Create Backstage ClusterRole"
+      manifests:
+        - ./manifests/backstage/backstage-clusterrole.yaml
+  - kubernetes:
+      description: "Create Backstage ClusterRoleBinding"
+      manifests:
+        - ./manifests/backstage/backstage-clusterrole-binding.yaml
   # step install helm argo
   # step install helm backstage
-  # step kubernetes step to create the selfsigned-issuer
   # step argo-app-of-apps
   # step argo-clusters-app
   # step argo-kyverno-appset
   # step argo-kyverno-default-policies
   # step argo-kyverno-custom-policies
   # step argo-hub-secret
-  # step backstage-ro-role+rolebinding
   # step kyverno-custom-policies
-
-
 
   # - kubernetes:
   #     description: "Define Crossplane RuntimeConfig"

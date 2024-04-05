@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-app-config
+  namespace: backstage
+data:
+  app-config.yaml: |
+    app:
+      baseUrl: https://ui.backstack.nirmata.co
+      title: BACK Stack IDP
+    auth:
+      environment: prod
+      providers:
+        google:
+          prod:
+            clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+            clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+    backend:
+      baseUrl: https://ui.backstack.nirmata.co
+      cors:
+        credentials: true
+        methods:
+        - GET
+        - HEAD
+        - PATCH
+        - POST
+        - PUT
+        - DELETE
+        origin: http://localhost:3000
+      csp:
+        connect-src:
+        - '''self'''
+        - 'http:'
+        - 'https:'
+      database:
+        client: better-sqlite3
+        connection: ':memory:'
+      listen:
+        port: 7007
+    catalog:
+      import:
+        entityFilename: catalog-info.yaml
+        pullRequestBranchName: backstage-integration
+      locations:
+      - rules:
+        - allow:
+          - Group
+          - User
+        target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+        type: url
+      - rules:
+        - allow:
+          - Component
+          - API
+          - Resource
+          - Template
+          - System
+        target: https://github.com/nirmata/backstack-internal/blob/main/catalog-info.yaml
+        type: url
+    integrations:
+      github:
+      - host: github.com
+        token: ${GITHUB_TOKEN}
+    kubernetes:
+      clusterLocatorMethods:
+      - type: catalog
+      serviceLocatorMethod:
+        type: multiTenant
+    organization:
+      name: BACK Stack
+    proxy: null
+    scaffolder: null
+    techdocs:
+      builder: local
+      generator:
+        runIn: docker
+      publisher:
+        type: local
+    vault:
+      baseUrl: http://vault.vault.svc:8200
+      kvVersion: "2"
+      publicUrl: https://vault.backstack.nirmata.co
+      secretEngine: secret
+      token: ${VAULT_TOKEN}
