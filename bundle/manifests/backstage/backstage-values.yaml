@@ -10,7 +10,7 @@ backstage:
   image:
     registry: ${REGISTRY}
     repository: ${BACKSTAGE_IMAGE} #needs to be patched in
-    tag: latest
+    tag: ${BACKSTAGE_IMAGE_TAG}
     pullPolicy: Always
   extraEnvVarsSecrets:
   - backstage

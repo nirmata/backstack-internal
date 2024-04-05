@@ -3,6 +3,6 @@ kind: Configuration
 metadata:
   name: back-stack
 spec:
-  package: ghcr.io/nirmata/backstack-internal-configuration:latest
+  package: ${CROSSPLANE_IMAGE}:${CROSSPLANE_IMAGE_TAG}
   skipDependencyResolution: true
   packagePullPolicy: Always

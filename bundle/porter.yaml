@@ -98,6 +98,18 @@ parameters:
     env: BACKSTAGE_IMAGE
     type: string
     default: nirmata/backstack-internal-backstage
+  - name: backstage-image-tag
+    env: BACKSTAGE_IMAGE_TAG
+    type: string
+    default: latest
+  - name: crossplane-image-repository
+    env: CROSSPLANE_IMAGE
+    type: string
+    default: nirmata/backstack-internal-crossplane
+  - name: crossplane-image-tag
+    env: CROSSPLANE_IMAGE_TAG
+    type: string
+    default: latest
   - name: backstage-google-auth
     env: BACKSTAGE_GOOGLE_AUTH
     type: string
