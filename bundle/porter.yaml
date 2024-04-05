@@ -99,6 +99,10 @@ parameters:
     env: DEPLOY_INGRESS_CONTROLLER
     type: string
     default: true
+  - name: custom-values-ingress-controller
+    type: file
+    path: ./home/nonroot/values-custom-${bundle.parameters.cluster-type}.yaml
+    default: ./home/nonroot/values-custom-${bundle.parameters.cluster-type}.yaml
   # This would be a link to manifest repo
   - name: kyverno-custom-policies-repo
     env: KYVERNO_CUSTOM_POLICIES
@@ -156,12 +160,20 @@ install:
       arguments:
         - ensure_kubernetes
   - helm3:
+      description: "Install cert-manager"
+      name: cert-manager
+      namespace: cert-manager
+      chart: jetstack/cert-manager
+      atomic: true
+      wait: true
+      set:
+        installCRDs: true
+  - helm3:
       description: "Install ingress-nginx"
       name: ingress-nginx
-      namespace: backstack-ingress-nginx
+      namespace: ingress-nginx
       chart: ingress-nginx/ingress-nginx
-      # need to set this up as a macro that can get populated from an external process
-      version: 4.10.0
+      atomic: true
       wait: true
       values:
         - ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
@@ -171,11 +183,30 @@ install:
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
+  # step install helm vault
+  # step run vault post install script
+  # step install helm argo
+  # step install helm backstage
+  # step install helm kyverno
+  # step kubernetes step to create the selfsigned-issuer
+  # step crossplane-vaultconfig
+  # step crossplane-storeconfig
+  # step argo-app-of-apps
+  # step argo-clusters-app
+  # step argo-kyverno-appset
+  # step argo-kyverno-default-policies
+  # step argo-kyverno-custom-policies
+  # step argo-hub-secret
+  # step backstage-ro-role+rolebinding
+  # step kyverno-default-policies
+  # step kyverno-custom-policies
+  # step kyverno-argo-cluster-generation-policy
   - helm3:
       description: "Install crossplane"
       name: crossplane
       namespace: crossplane-system
       chart: crossplane-stable/crossplane
+      atomic: true
       wait: true
       set:
         args: "{--enable-external-secret-stores}"
@@ -184,6 +215,7 @@ install:
       name: ess-plugin-vault
       namespace: crossplane-system
       chart: oci://xpkg.upbound.io/crossplane-contrib/ess-plugin-vault
+      atomic: true
       wait: true
       values:
         - ./manifests/ess-plugin-vault.yaml

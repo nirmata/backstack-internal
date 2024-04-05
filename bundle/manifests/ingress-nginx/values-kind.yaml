@@ -4,9 +4,11 @@ controller:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
+
   hostPort:
     enabled: true
   terminationGracePeriodSeconds: 0
+
   service:
     type: NodePort
   watchIngressWithoutClass: true

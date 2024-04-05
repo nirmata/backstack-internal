@@ -3,6 +3,7 @@ controller:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
+
   service:
     type: LoadBalancer
     annotations:
