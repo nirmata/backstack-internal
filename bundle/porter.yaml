@@ -5,7 +5,6 @@ description: "The BACK Stack hub cluster installation"
 dockerfile: template.Dockerfile
 
 credentials:
-  # required
   - name: github-token
     env: GITHUB_TOKEN
     applyTo:
@@ -24,7 +23,6 @@ credentials:
     env: AWS_CREDENTIALS
     applyTo:
       - install
-  # optional
   - name: kubeconfig
     path: /home/nonroot/.kube/config
     required: false
@@ -57,7 +55,7 @@ credentials:
   # a credential rather than as a parameter
   - name: ingress-controller-annotations
     required: false
-    env: ${INGRESS_CONTROLLER_CUSTOM_ANNOTATIONS}
+    path: /home/nonroot/ingress-nginx-custom.yaml
     applyTo:
       - install
 
@@ -99,10 +97,6 @@ parameters:
     env: DEPLOY_INGRESS_CONTROLLER
     type: string
     default: true
-  - name: custom-values-ingress-controller
-    type: file
-    path: ./home/nonroot/values-custom-${bundle.parameters.cluster-type}.yaml
-    default: ./home/nonroot/values-custom-${bundle.parameters.cluster-type}.yaml
   # This would be a link to manifest repo
   - name: kyverno-custom-policies-repo
     env: KYVERNO_CUSTOM_POLICIES
@@ -177,20 +171,56 @@ install:
       wait: true
       values:
         - ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
+        - ${bundle.credentials.ingress-controller-annotations}
       outputs:
         - name: ingress
           resourceType: service
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
-  # step install helm vault
-  # step run vault post install script
+  - helm3:
+      description: "Install Crossplane"
+      name: crossplane
+      namespace: crossplane-system
+      chart: crossplane-stable/crossplane
+      atomic: true
+      wait: true
+      set:
+        args: "{--enable-external-secret-stores}"
+  - helm3:
+      description: "Install Crossplane Vault ESS plugin"
+      name: ess-plugin-vault
+      namespace: crossplane-system
+      chart: oci://xpkg.upbound.io/crossplane-contrib/ess-plugin-vault
+      atomic: true
+      wait: true
+      values:
+        - ./manifests/ess-plugin-vault.yaml
+  - helm3:
+      description: "Install Vault"
+      name: vault
+      namespace: vault
+      chart: hashi/vault
+      atomic: true
+      wait: true
+      values:
+        - ./manifests/vault/vault-values.yaml
+  - kubernetes:
+      description: "Create Vault Crossplane ESS Configmap"
+      manifests:
+        - ./manifests/vault/vault-ess-configmap.yaml
+  - kubernetes:
+      description: "Create Crossplane VaultConfig"
+      manifests:
+        - ./manifests/vault/vault-corssplane-vault.yaml
+  - kubernetes:
+      description: "Create Crossplane StoreConfig"
+      manifests:
+        - ./manifests/vault/vault-corssplane-store.yaml
   # step install helm argo
   # step install helm backstage
   # step install helm kyverno
   # step kubernetes step to create the selfsigned-issuer
-  # step crossplane-vaultconfig
-  # step crossplane-storeconfig
   # step argo-app-of-apps
   # step argo-clusters-app
   # step argo-kyverno-appset
@@ -201,72 +231,57 @@ install:
   # step kyverno-default-policies
   # step kyverno-custom-policies
   # step kyverno-argo-cluster-generation-policy
-  - helm3:
-      description: "Install crossplane"
-      name: crossplane
-      namespace: crossplane-system
-      chart: crossplane-stable/crossplane
-      atomic: true
-      wait: true
-      set:
-        args: "{--enable-external-secret-stores}"
-  - helm3:
-      description: "Install vault ess plugin"
-      name: ess-plugin-vault
-      namespace: crossplane-system
-      chart: oci://xpkg.upbound.io/crossplane-contrib/ess-plugin-vault
-      atomic: true
-      wait: true
-      values:
-        - ./manifests/ess-plugin-vault.yaml
-  - kubernetes:
-      description: "Define Crossplane RuntimeConfig"
-      manifests:
-        - ./manifests/providers/runtime-config.yaml
-  - kubernetes:
-      description: "Define Crossplane Providers"
-      manifests:
-        - ./manifests/providers/providers.yaml
-  - exec:
-      description: "Wait for providers to become healthy"
-      command: ./helpers.sh
-      arguments:
-        - validate_providers
-  - kubernetes:
-      description: "Configure Crossplane Providers"
-      manifests:
-        - ./manifests/providers/provider-configs.yaml
-  - kubernetes:
-      description: "Install BACK Stack Configuration"
-      manifests:
-        - ./manifests/back-stack.yaml
-  - exec:
-      description: "Validate BACK Stack Configuration"
-      command: ./helpers.sh
-      arguments:
-        - validate_configuration
-  - exec:
-      description: "Deploy BACK Stack"
-      command: ./helpers.sh
-      arguments:
-        - deploy_backstack_hub
-  - exec:
-      description: "Install Secrets"
-      command: ./helpers.sh
-      arguments:
-        - deploy_secrets
-  - exec:
-      description: "Restart Crossplane ESS Vault Plugin"
-      command: ./helpers.sh
-      arguments:
-        - restart_pod
-        - crossplane-system
-        - ess-plugin-vault
-  - exec:
-      description: "Grab ArgoCD Initial Password"
-      command: ./helpers.sh
-      arguments:
-        - return_argo_initial_pass
+
+
+
+  # - kubernetes:
+  #     description: "Define Crossplane RuntimeConfig"
+  #     manifests:
+  #       - ./manifests/providers/runtime-config.yaml
+  # - kubernetes:
+  #     description: "Define Crossplane Providers"
+  #     manifests:
+  #       - ./manifests/providers/providers.yaml
+  # - exec:
+  #     description: "Wait for providers to become healthy"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - validate_providers
+  # - kubernetes:
+  #     description: "Configure Crossplane Providers"
+  #     manifests:
+  #       - ./manifests/providers/provider-configs.yaml
+  # - kubernetes:
+  #     description: "Install BACK Stack Configuration"
+  #     manifests:
+  #       - ./manifests/back-stack.yaml
+  # - exec:
+  #     description: "Validate BACK Stack Configuration"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - validate_configuration
+  # - exec:
+  #     description: "Deploy BACK Stack"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - deploy_backstack_hub
+  # - exec:
+  #     description: "Install Secrets"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - deploy_secrets
+  # - exec:
+  #     description: "Restart Crossplane ESS Vault Plugin"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - restart_pod
+  #       - crossplane-system
+  #       - ess-plugin-vault
+  # - exec:
+  #     description: "Grab ArgoCD Initial Password"
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - return_argo_initial_pass
 
 # Define the steps that should execute when the bundle is upgraded
 upgrade:
