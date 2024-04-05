@@ -269,13 +269,7 @@ install:
       wait: true
       values:
         - ./manifests/argocd/argocd-values.yaml
-  # step install helm argo
-  # step argo-app-of-apps
-  # step argo-clusters-app
-  # step argo-kyverno-appset
-  # step argo-kyverno-default-policies
   # step argo-kyverno-custom-policies
-  # step argo-hub-secret
   # step kyverno-custom-policies
 
   # - kubernetes:
