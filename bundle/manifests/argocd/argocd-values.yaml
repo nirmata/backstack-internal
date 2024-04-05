@@ -14,7 +14,7 @@ configs:
     exec.enabled: "false"
     server.rbac.log.enforce.enable: "false"
     application.resourceTrackingMethod: annotation
-    # url: added as patch set
+    url: https://${ARGOCD_HOST}
 server:
   deploymentAnnotations:
     backstage.io/kubernetes-id: argocd-service
@@ -25,7 +25,7 @@ server:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
     hosts:
-    - hostname # patched
+    - ${ARGOCD_HOST} # patched
   ingressGrpc:
     enabled: true
     ingressClassName: nginx
@@ -33,4 +33,4 @@ server:
       nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
       cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
     hosts:
-    - grpc.hostname # patched
+    - ${ARGOCD_HOST} # patched

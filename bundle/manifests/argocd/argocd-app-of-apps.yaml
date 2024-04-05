@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: repository # patched
+    repoURL: ${REPOSITORY} # patched
     path: demo/applications
     targetRevision: HEAD
   destination:

@@ -53,8 +53,9 @@ credentials:
   # Since these annotations can contain potentially sensitive information such as
   # Account numbers, certificate numbers, etc. It is better they are passed in as
   # a credential rather than as a parameter
-  - name: ingress-controller-annotations
+  - name: custom-ingress-controller-annotations
     required: false
+    env: ${CUSTOM_INGRESS_CONTROLLER_ANNOTATIONS}
     path: /home/nonroot/ingress-nginx-custom.yaml
     applyTo:
       - install
@@ -73,6 +74,10 @@ parameters:
     env: REPOSITORY
     type: string
     default: https://github.com/nirmata/backstack-internal
+  - name: registry
+    env: REGISTRY
+    type: string
+    default: ghcr.io
   - name: backstage-host
     env: BACKSTAGE_HOST
     type: string
@@ -89,6 +94,10 @@ parameters:
     env: ARGO_GOOGLE_AUTH
     type: string
     default: false
+  - name: backstage-image-repository
+    env: BACKSTAGE_IMAGE
+    type: string
+    default: nirmata/backstack-internal-backstage
   - name: backstage-google-auth
     env: BACKSTAGE_GOOGLE_AUTH
     type: string
@@ -182,6 +191,7 @@ install:
         installCRDs: true
   - kubernetes:
       description: "Create cert-manager Self-Signed ClusterIssuer"
+      wait: true
       manifests:
         - ./manifests/cert-manager/cert-manager-cluster-issuer.yaml
   - helm3:
@@ -217,7 +227,7 @@ install:
       atomic: true
       wait: true
       values:
-        - ./manifests/ess-plugin-vault.yaml
+        - ./manifests/vault/vault-ess-plugin-values.yaml
   - helm3:
       description: "Install Vault"
       name: vault
@@ -229,14 +239,17 @@ install:
         - ./manifests/vault/vault-values.yaml
   - kubernetes:
       description: "Create Vault Crossplane ESS Configmap"
+      wait: true
       manifests:
         - ./manifests/vault/vault-ess-configmap.yaml
   - kubernetes:
       description: "Create Crossplane VaultConfig"
+      wait: true
       manifests:
         - ./manifests/vault/vault-corssplane-vault.yaml
   - kubernetes:
       description: "Create Crossplane StoreConfig"
+      wait: true
       manifests:
         - ./manifests/vault/vault-corssplane-store.yaml
   - helm3:
@@ -250,14 +263,17 @@ install:
         - ./manifests/backstage/backstage-values.yaml
   - kubernetes:
       description: "Create Backstage App-Config ConfigMap"
+      wait: true
       manifests:
         - ./manifests/backstage/backstage-app-config.yaml
   - kubernetes:
       description: "Create Backstage ClusterRole"
+      wait: true
       manifests:
         - ./manifests/backstage/backstage-clusterrole.yaml
   - kubernetes:
       description: "Create Backstage ClusterRoleBinding"
+      wait: true
       manifests:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
   - helm3:

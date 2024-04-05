@@ -8,8 +8,8 @@ ingress:
     secretName: backstage-tls
 backstage:
   image:
-    registry: ghcr.io
-    repository: nirmata/backstack-internal-backstage
+    registry: ${REGISTRY}
+    repository: ${BACKSTAGE_IMAGE} #needs to be patched in
     tag: latest
     pullPolicy: Always
   extraEnvVarsSecrets:

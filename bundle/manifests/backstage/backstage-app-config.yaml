@@ -6,7 +6,7 @@ metadata:
 data:
   app-config.yaml: |
     app:
-      baseUrl: https://ui.backstack.nirmata.co
+      baseUrl: https://${BACKSTAGE_HOST}
       title: BACK Stack IDP
     auth:
       environment: prod
@@ -16,7 +16,7 @@ data:
             clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
             clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
     backend:
-      baseUrl: https://ui.backstack.nirmata.co
+      baseUrl: https://${BACKSTAGE_HOST}
       cors:
         credentials: true
         methods:
@@ -55,7 +55,7 @@ data:
           - Resource
           - Template
           - System
-        target: https://github.com/nirmata/backstack-internal/blob/main/catalog-info.yaml
+        target: ${REPOSITORY}/blob/main/catalog-info.yaml
         type: url
     integrations:
       github:
@@ -79,6 +79,6 @@ data:
     vault:
       baseUrl: http://vault.vault.svc:8200
       kvVersion: "2"
-      publicUrl: https://vault.backstack.nirmata.co
+      publicUrl: https://${VAULT_HOST}
       secretEngine: secret
       token: ${VAULT_TOKEN}
