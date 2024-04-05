@@ -59,6 +59,11 @@ credentials:
     path: /home/nonroot/ingress-nginx-custom.yaml
     applyTo:
       - install
+  - name: kyverno-custom-policies-repository
+    required: false
+    env: ${KYVERNO_CUSTOM_POLICIES_REPOSITORY}
+    applyTo:
+      - install
 
 parameters:
   - name: cluster-type
@@ -118,11 +123,6 @@ parameters:
     env: DEPLOY_INGRESS_CONTROLLER
     type: string
     default: true
-  # This would be a link to manifest repo
-  - name: kyverno-custom-policies-repo
-    env: KYVERNO_CUSTOM_POLICIES
-    type: string
-    default: no_custom_policies
 
 outputs:
   - name: kubeconfig
@@ -167,7 +167,6 @@ mixins:
         vault:
           url: https://helm.releases.hashicorp.com
 
-# Define the steps that should execute when the bundle is installed
 install:
   - exec:
       description: "Ensure Kubernetes Connection"
@@ -349,7 +348,6 @@ install:
   #     arguments:
   #       - return_argo_initial_pass
 
-# Define the steps that should execute when the bundle is upgraded
 upgrade:
   - exec:
       description: "Not implemented at this time"
@@ -357,7 +355,6 @@ upgrade:
       arguments:
         - upgrade
 
-# Define the steps that should execute when the bundle is uninstalled
 uninstall:
   - exec:
       description: "Uninstall BACK Stack"
