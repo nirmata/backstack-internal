@@ -20,25 +20,25 @@ spec:
         - fromFieldPath: spec.parameters.clusterId
           toFieldPath: spec.providerConfigRef.name
       resources:
-      - name: cert-manager
-        base:
-          apiVersion: helm.crossplane.io/v1beta1
-          kind: Release
-          metadata:
-            annotations:
-              crossplane.io/external-name: cert-manager
-          spec:
-            forProvider:
-              namespace: cert-manager
-              chart:
-                name: cert-manager
-                repository: https://charts.jetstack.io
-                version: v1.13.1
-              values:
-                installCRDs: true
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
+      # - name: cert-manager
+      #   base:
+      #     apiVersion: helm.crossplane.io/v1beta1
+      #     kind: Release
+      #     metadata:
+      #       annotations:
+      #         crossplane.io/external-name: cert-manager
+      #     spec:
+      #       forProvider:
+      #         namespace: cert-manager
+      #         chart:
+      #           name: cert-manager
+      #           repository: https://charts.jetstack.io
+      #           version: v1.13.1
+      #         values:
+      #           installCRDs: true
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
       - name: selfsigned-cluster-issuer
         base:
           apiVersion: kubernetes.crossplane.io/v1alpha1
@@ -659,138 +659,138 @@ spec:
         patches:
         - type: PatchSet
           patchSetName: target-cluster
-      - name: vault
-        base:
-          apiVersion: helm.crossplane.io/v1beta1
-          kind: Release
-          metadata:
-            annotations:
-              crossplane.io/external-name: vault
-          spec:
-            forProvider:
-              namespace: vault
-              chart:
-                name: vault
-                repository: https://helm.releases.hashicorp.com
-              values:
-                server:
-                  dev:
-                    enabled: true
-                  ui:
-                    enabled: true
-                  ingress:
-                    enabled: true
-                    ingressClassName: nginx
-                    annotations:
-                      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-                    hosts:
-                    - host: hostname # patched
-                    tls:
-                    - hosts:
-                      - hostname # patched
-                      secretName: vault-tls
-                  volumes:
-                  - name: crossplane-ess-plugin
-                    configMap:
-                      name: crossplane-ess-plugin
-                      items:
-                      - key: run.sh
-                        path: run.sh
-                        mode: 511
-                  volumeMounts:
-                  - name: crossplane-ess-plugin
-                    mountPath: /vault/userconfig/crossplane-ess-plugin
-                  postStart:
-                  - /bin/sh
-                  - -c
-                  - /vault/userconfig/crossplane-ess-plugin/run.sh
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-        - fromFieldPath: spec.parameters.vault.host
-          toFieldPath: spec.forProvider.values.server.ingress.hosts[0].host
-        - fromFieldPath: spec.parameters.vault.host
-          toFieldPath: spec.forProvider.values.server.ingress.tls[0].hosts[0]
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-          - type: string
-            string:
-              type: Format
-              fmt: "%s-vault"
-      - name: vault-poststart-script
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: v1
-                kind: ConfigMap
-                metadata:
-                  name: crossplane-ess-plugin
-                  namespace: vault
-                data:
-                  run.sh: |
-                    sleep 4
-                    vault auth enable kubernetes
-                    vault write auth/kubernetes/config token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-                    vault policy write crossplane - <<EOF
-                      path "secret/data/*" {
-                        capabilities = ["create", "read", "update", "delete"]
-                      }
-                      path "secret/metadata/*" {
-                        capabilities = ["create", "read", "update", "delete"]
-                      }
-                    EOF
-                    vault write auth/kubernetes/role/crossplane bound_service_account_names="*" bound_service_account_namespaces=crossplane-system policies=crossplane ttl=24h
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-      - name: crossplane-vaultconfig
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: secrets.crossplane.io/v1alpha1
-                kind: VaultConfig
-                metadata:
-                  name: vault-internal
-                spec:
-                  server: http://vault.vault:8200
-                  mountPath: secret/
-                  version: v2
-                  auth:
-                    method: Token
-                    token:
-                      source: Filesystem
-                      fs:
-                        path: /vault/secrets/token
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
-      - name: crossplane-storeconfig
-        base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: secrets.crossplane.io/v1alpha1
-                kind: StoreConfig
-                metadata:
-                  name: vault
-                spec:
-                  type: Plugin
-                  defaultScope: crossplane-system
-                  plugin:
-                    endpoint: ess-plugin-vault.crossplane-system:4040
-                    configRef:
-                      apiVersion: secrets.crossplane.io/v1alpha1
-                      kind: VaultConfig
-                      name: vault-internal
-        patches:
-        - type: PatchSet
-          patchSetName: target-cluster
+      # - name: vault
+      #   base:
+      #     apiVersion: helm.crossplane.io/v1beta1
+      #     kind: Release
+      #     metadata:
+      #       annotations:
+      #         crossplane.io/external-name: vault
+      #     spec:
+      #       forProvider:
+      #         namespace: vault
+      #         chart:
+      #           name: vault
+      #           repository: https://helm.releases.hashicorp.com
+      #         values:
+      #           server:
+      #             dev:
+      #               enabled: true
+      #             ui:
+      #               enabled: true
+      #             ingress:
+      #               enabled: true
+      #               ingressClassName: nginx
+      #               annotations:
+      #                 cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      #               hosts:
+      #               - host: hostname # patched
+      #               tls:
+      #               - hosts:
+      #                 - hostname # patched
+      #                 secretName: vault-tls
+      #             volumes:
+      #             - name: crossplane-ess-plugin
+      #               configMap:
+      #                 name: crossplane-ess-plugin
+      #                 items:
+      #                 - key: run.sh
+      #                   path: run.sh
+      #                   mode: 511
+      #             volumeMounts:
+      #             - name: crossplane-ess-plugin
+      #               mountPath: /vault/userconfig/crossplane-ess-plugin
+      #             postStart:
+      #             - /bin/sh
+      #             - -c
+      #             - /vault/userconfig/crossplane-ess-plugin/run.sh
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      #   - fromFieldPath: spec.parameters.vault.host
+      #     toFieldPath: spec.forProvider.values.server.ingress.hosts[0].host
+      #   - fromFieldPath: spec.parameters.vault.host
+      #     toFieldPath: spec.forProvider.values.server.ingress.tls[0].hosts[0]
+      #   - fromFieldPath: metadata.name
+      #     toFieldPath: metadata.name
+      #     transforms:
+      #     - type: string
+      #       string:
+      #         type: Format
+      #         fmt: "%s-vault"
+      # - name: vault-poststart-script
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: v1
+      #           kind: ConfigMap
+      #           metadata:
+      #             name: crossplane-ess-plugin
+      #             namespace: vault
+      #           data:
+      #             run.sh: |
+      #               sleep 4
+      #               vault auth enable kubernetes
+      #               vault write auth/kubernetes/config token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      #               vault policy write crossplane - <<EOF
+      #                 path "secret/data/*" {
+      #                   capabilities = ["create", "read", "update", "delete"]
+      #                 }
+      #                 path "secret/metadata/*" {
+      #                   capabilities = ["create", "read", "update", "delete"]
+      #                 }
+      #               EOF
+      #               vault write auth/kubernetes/role/crossplane bound_service_account_names="*" bound_service_account_namespaces=crossplane-system policies=crossplane ttl=24h
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      # - name: crossplane-vaultconfig
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: secrets.crossplane.io/v1alpha1
+      #           kind: VaultConfig
+      #           metadata:
+      #             name: vault-internal
+      #           spec:
+      #             server: http://vault.vault:8200
+      #             mountPath: secret/
+      #             version: v2
+      #             auth:
+      #               method: Token
+      #               token:
+      #                 source: Filesystem
+      #                 fs:
+      #                   path: /vault/secrets/token
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
+      # - name: crossplane-storeconfig
+      #   base:
+      #     apiVersion: kubernetes.crossplane.io/v1alpha1
+      #     kind: Object
+      #     spec:
+      #       forProvider:
+      #         manifest:
+      #           apiVersion: secrets.crossplane.io/v1alpha1
+      #           kind: StoreConfig
+      #           metadata:
+      #             name: vault
+      #           spec:
+      #             type: Plugin
+      #             defaultScope: crossplane-system
+      #             plugin:
+      #               endpoint: ess-plugin-vault.crossplane-system:4040
+      #               configRef:
+      #                 apiVersion: secrets.crossplane.io/v1alpha1
+      #                 kind: VaultConfig
+      #                 name: vault-internal
+      #   patches:
+      #   - type: PatchSet
+      #     patchSetName: target-cluster
