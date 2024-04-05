@@ -154,6 +154,24 @@ install:
       arguments:
         - ensure_kubernetes
   - helm3:
+      description: "Install Kyverno"
+      name: kyverno
+      namespace: kyverno
+      chart: kyverno/kyverno
+      atomic: true
+      wait: true
+  - helm3:
+      description: "Install Kyverno PSS Restricted in Enforce Mode"
+      name: kyverno-policies
+      namespace: kyverno
+      chart: kyverno/kyverno-policies
+      atomic: true
+      wait: true
+      set:
+        podSecurityStandard: restricted
+        validationFailureAction: Enforce
+        podSecuritySeverity: High
+  - helm3:
       description: "Install cert-manager"
       name: cert-manager
       namespace: cert-manager
@@ -219,7 +237,6 @@ install:
         - ./manifests/vault/vault-corssplane-store.yaml
   # step install helm argo
   # step install helm backstage
-  # step install helm kyverno
   # step kubernetes step to create the selfsigned-issuer
   # step argo-app-of-apps
   # step argo-clusters-app
@@ -228,9 +245,7 @@ install:
   # step argo-kyverno-custom-policies
   # step argo-hub-secret
   # step backstage-ro-role+rolebinding
-  # step kyverno-default-policies
   # step kyverno-custom-policies
-  # step kyverno-argo-cluster-generation-policy
 
 
 
