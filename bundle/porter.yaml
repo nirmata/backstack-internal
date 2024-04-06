@@ -68,7 +68,7 @@ credentials:
     required: false
     description: If you would like to overwrite the default ingress-nginx annotations. Usually necessary when deploying to custom environments
     env: ${CUSTOM_INGRESS_CONTROLLER_ANNOTATIONS}
-    path: /home/nonroot/ingress-nginx-custom.yaml
+    path: ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
     applyTo:
       - install
   - name: kyverno-hub-custom-policies-repository
@@ -242,7 +242,6 @@ install:
       wait: true
       values:
         - ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
-        - ${bundle.credentials.custom-ingress-controller-annotations}
       outputs:
         - name: ingress
           resourceType: service
