@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# This is internal to the container, it does not relate to local system paths
 K8S_CFG_INTERNAL=/home/nonroot/.kube/config
+# This is internal to the container, it does not relate to local system paths
 K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
 CLUSTER_NAME=backstack-hub
 

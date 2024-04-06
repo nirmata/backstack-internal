@@ -80,6 +80,7 @@ parameters:
       - eks
       - aks
       - gke
+      - xks
   - name: repository
     env: REPOSITORY
     type: string
