@@ -12,39 +12,39 @@ validate_providers() {
   done
 }
 
-validate_configuration() {
+validate_back_stack_configuration() {
   kubectl wait configuration/back-stack --for='condition=healthy' --timeout=10m
 }
 
-deploy_backstack_hub() {
-  # this is a silly way to solve the problem of waiting for the custom CRDs to
-  # show up and be ready, but for now its an easy enough way to get around it
-  # not dropping out of the install. This is NOT a fool proof way of solving this
-  echo "Waiting for Backstack CRDs to be ready"
-  while ! kubectl get crd hubs.backstack.dev &>/dev/null; do sleep 1; done
-  # deploy hub
-  kubectl apply -f - <<-EOF
-      apiVersion: backstack.dev/v1alpha1
-      kind: Hub
-      metadata:
-        name: hub
-      spec:
-        parameters:
-          clusterId: local
-          repository: ${REPOSITORY}
-          backstage:
-            host: ${BACKSTAGE_HOST}
-            image:
-              registry: ghcr.io
-              repository: back-stack/showcase-backstage
-              tag: latest
-              pullPolicy: Always
-          argocd:
-            host: ${ARGOCD_HOST}
-          vault:
-            host: ${VAULT_HOST}
-EOF
-}
+# deploy_backstack_hub() {
+#   # this is a silly way to solve the problem of waiting for the custom CRDs to
+#   # show up and be ready, but for now its an easy enough way to get around it
+#   # not dropping out of the install. This is NOT a fool proof way of solving this
+#   echo "Waiting for Backstack CRDs to be ready"
+#   while ! kubectl get crd hubs.backstack.dev &>/dev/null; do sleep 1; done
+#   # deploy hub
+#   kubectl apply -f - <<-EOF
+#       apiVersion: backstack.dev/v1alpha1
+#       kind: Hub
+#       metadata:
+#         name: hub
+#       spec:
+#         parameters:
+#           clusterId: local
+#           repository: ${REPOSITORY}
+#           backstage:
+#             host: ${BACKSTAGE_HOST}
+#             image:
+#               registry: ghcr.io
+#               repository: back-stack/showcase-backstage
+#               tag: latest
+#               pullPolicy: Always
+#           argocd:
+#             host: ${ARGOCD_HOST}
+#           vault:
+#             host: ${VAULT_HOST}
+# EOF
+# }
 
 deploy_secrets() {
   ensure_namespace argocd

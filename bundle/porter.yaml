@@ -373,16 +373,12 @@ install:
   # step argo-kyverno-custom-policies
   # step kyverno-custom-policies
 
-  # - exec:
-  #     description: "Validate BACK Stack Configuration"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - validate_configuration
-  # - exec:
-  #     description: "Deploy BACK Stack"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - deploy_backstack_hub
+  - exec:
+      description: "Validate BACK Stack Configuration & Providers"
+      command: ./helpers.sh
+      arguments:
+        - validate_back_stack_configuration
+
   # - exec:
   #     description: "Install Secrets"
   #     command: ./helpers.sh
