@@ -5,10 +5,10 @@ metadata:
     backstage.io/kubernetes-label-selector: app.kubernetes.io/part-of=argocd
   name: argocd
   description: Gitops Platform
-  links:
-    - url: https://argo.backstack.nirmata.co
-      title: ArgoCD Dashboard
-      icon: dashboard
+  # links:
+  #   - url: https://argo.backstack.nirmata.co
+  #     title: ArgoCD Dashboard
+  #     icon: dashboard
 spec:
   type: service
   lifecycle: production
