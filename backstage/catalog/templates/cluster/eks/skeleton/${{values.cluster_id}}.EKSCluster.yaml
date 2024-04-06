@@ -13,6 +13,7 @@ spec:
     nodes:
       count: ${{ values.nodes_count }}
       instanceType: ${{ values.nodes_instance_type }}
+    kyverno_custom_repository: ${{ values.custom_kyverno_policies }}
   writeConnectionSecretToRef:
     name: spoke-${{ values.cluster_id }}-kubeconfig
   publishConnectionDetailsTo:
