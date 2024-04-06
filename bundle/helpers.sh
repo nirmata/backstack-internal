@@ -152,6 +152,14 @@ upgrade() {
 uninstall() {
   if [ "$CLUSTER_TYPE" = "kind" ]; then
     kind delete cluster --name ${CLUSTER_NAME}
+    exit 0
+  else
+    echo !!!====================================!!!\n
+    echo !!! Uninstall process will remove all  !!!\n
+    echo !!! helm charts that were installed    !!!\n
+    echo !!! the process will NOT delete the    !!!\n
+    echo !!! namespaces. It is up to you to do  !!!\n
+    echo !!!====================================!!!\n
   fi
 }
 
