@@ -46,7 +46,7 @@ data:
         - allow:
           - Group
           - User
-        target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+        target: ${REPOSITORY}/blob/main/backstage-org.yaml
         type: url
       - rules:
         - allow:
@@ -55,7 +55,7 @@ data:
           - Resource
           - Template
           - System
-        target: ${REPOSITORY}/blob/main/catalog-info.yaml
+        target: ${REPOSITORY}/blob/main/backstage-catalog-info.yaml
         type: url
     integrations:
       github:
