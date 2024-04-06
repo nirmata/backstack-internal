@@ -1,3 +1,5 @@
+schemaType: Bundle
+schemaVersion: 1.0.1
 registry: "ghcr.io"
 name: backstack-porter
 description: "The BACK Stack hub cluster installation"
@@ -172,7 +174,7 @@ mixins:
   - docker
   - kubernetes
   - helm3:
-      clientVersion: v3.13.2
+      clientVersion: v3.14.3 #TODO: need this to be macro
       repositories:
         crossplane-stable:
           url: https://charts.crossplane.io/stable
