@@ -115,6 +115,8 @@ ensure_kubernetes() {
     docker network connect kind ${HOSTNAME}
     KIND_DIND_IP=$(docker inspect -f "{{ .NetworkSettings.Networks.kind.IPAddress }}" ${CLUSTER_NAME}-control-plane)
     sed -i -e "s@server: .*@server: https://${KIND_DIND_IP}:6443@" ${K8S_CFG_INTERNAL}
+  # TODO: look at utilizing the aws mixin instead of doing all of this
+  # TODO: if the above works, remove the awscli from the dockerfile tempalte
   elif [ "$CLUSTER_TYPE" = "eks" ]; then
     if [ ! -d "~/.aws" ]; then
       mkdir ~/.aws
