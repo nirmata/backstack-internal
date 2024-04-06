@@ -122,7 +122,7 @@ parameters:
   - name: argo-google-auth
     env: ARGO_GOOGLE_AUTH
     type: string
-    default: false
+    default: no_argo_auth
   - name: backstage-image-repository
     env: BACKSTAGE_IMAGE
     type: string
@@ -142,11 +142,11 @@ parameters:
   - name: backstage-google-auth
     env: BACKSTAGE_GOOGLE_AUTH
     type: string
-    default: false
+    default: no_backstage_auth
   - name: deploy-ingress-controller
     env: DEPLOY_INGRESS_CONTROLLER
     type: string
-    default: true
+    default: no_ingress_controller
 
 outputs:
   - name: kubeconfig
