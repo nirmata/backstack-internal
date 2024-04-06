@@ -125,6 +125,12 @@ ensure_kubernetes() {
     cp ${K8S_CFG_INTERNAL} ${K8S_CFG_EXTERNAL}
     kubectl get ns >/dev/null
   else
+    echo !!!====================================!!!\n
+    echo !!! Your cluster type is not supported !!!\n
+    echo !!! out of the box. We will attempt an !!!\n
+    echo !!! install of the HUB, however, expect!!! \n
+    echo !!! potential failures\n               !!!
+    echo !!!====================================!!!\n
     cp ${K8S_CFG_INTERNAL} ${K8S_CFG_EXTERNAL}
     kubectl get ns >/dev/null
   fi
