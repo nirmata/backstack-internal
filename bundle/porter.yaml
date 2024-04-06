@@ -7,46 +7,55 @@ dockerfile: template.Dockerfile
 credentials:
   - name: github-token
     env: GITHUB_TOKEN
+    description: Github token used to create PRs for clusters and applications from the BACK Stack HUB
     applyTo:
       - install
   - name: vault-token
     env: VAULT_TOKEN
+    description: Vault default token, unless you know what you are doing, set it to root
     applyTo:
       - install
   - name: azure-credentials
     required: false
     env: AZURE_CREDENTIALS
+    description: Azure credentials in JSON file format from az ad sp create-for-rbac
     applyTo:
       - install
   - name: aws-credentials
     required: false
     env: AWS_CREDENTIALS
+    description: AWS Credentials file set as [default] profile
     applyTo:
       - install
   - name: kubeconfig
     path: /home/nonroot/.kube/config
+    description: Local Kubeconfig file to use for HUB installation. Skip if using KinD
     required: false
     applyTo:
       - install
   # optional Google auth for Backstage
   - name: backstage-google-auth-client-id
     required: false
+    description: Google Auth IDP client id for SSO auth in Backstage
     env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
     applyTo:
       - install
   - name: backstage-google-auth-client-secret
     required: false
+    description: Google Auth IDP secret for SSO auth in Backstage
     env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
     applyTo:
       - install
   # optional Google auth for Argo
   - name: argocd-google-auth-client-id
     required: false
+    description: Google Auth IDP client id for SSO auth in ArgoCD
     env: ${ARGOCD_GOOGLE_AUTH_CLIENT_ID}
     applyTo:
       - install
   - name: argocd-google-auth-client-secret
     required: false
+    description: Google Auth IDP secret for SSO auth in ArgoCD
     env: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
     applyTo:
       - install
@@ -55,17 +64,20 @@ credentials:
   # a credential rather than as a parameter
   - name: custom-ingress-controller-annotations
     required: false
+    description: If you would like to overwrite the default ingress-nginx annotations. Usually necessary when deploying to custom environments
     env: ${CUSTOM_INGRESS_CONTROLLER_ANNOTATIONS}
     path: /home/nonroot/ingress-nginx-custom.yaml
     applyTo:
       - install
   - name: kyverno-hub-custom-policies-repository
     required: false
+    description: Repository with custom HUB Kyverno policies to be installed
     env: ${KYVERNO_HUB_CUSTOM_POLICIES_REPOSITORY}
     applyTo:
       - install
   - name: kyverno-spoke-custom-policies-repository
     required: false
+    description: Repository with custom SPOKE Kyverno policies to be installed
     env: ${KYVERNO_SPOKE_CUSTOM_POLICIES_REPOSITORY}
     applyTo:
       - install
@@ -85,6 +97,10 @@ parameters:
     env: REPOSITORY
     type: string
     default: https://github.com/nirmata/backstack-internal
+  - name: github-token-user
+    env: GITHUB_TOKEN_USER
+    type: string
+    default: back-stack
   - name: registry
     env: REGISTRY
     type: string
@@ -211,6 +227,7 @@ install:
       wait: true
       manifests:
         - ./manifests/cert-manager/cert-manager-cluster-issuer.yaml
+
   - helm3:
       description: "Install ingress-nginx"
       name: ingress-nginx
@@ -220,13 +237,14 @@ install:
       wait: true
       values:
         - ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
-        - ${bundle.credentials.ingress-controller-annotations}
+        - ${bundle.credentials.custom-ingress-controller-annotations}
       outputs:
         - name: ingress
           resourceType: service
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
+
   - helm3:
       description: "Install Crossplane"
       name: crossplane
@@ -236,15 +254,7 @@ install:
       wait: true
       set:
         args: "{--enable-external-secret-stores}"
-  - helm3:
-      description: "Install Crossplane Vault ESS plugin"
-      name: ess-plugin-vault
-      namespace: crossplane-system
-      chart: oci://xpkg.upbound.io/crossplane-contrib/ess-plugin-vault
-      atomic: true
-      wait: true
-      values:
-        - ./manifests/vault/vault-ess-plugin-values.yaml
+
   - helm3:
       description: "Install Vault"
       name: vault
@@ -260,15 +270,47 @@ install:
       manifests:
         - ./manifests/vault/vault-ess-configmap.yaml
   - kubernetes:
-      description: "Create Crossplane VaultConfig"
+      description: "Create Vault Crossplane VaultConfig"
       wait: true
       manifests:
         - ./manifests/vault/vault-corssplane-vault.yaml
+  - helm3:
+      description: "Install Crossplane Vault ESS plugin"
+      name: ess-plugin-vault
+      namespace: crossplane-system
+      chart: oci://xpkg.upbound.io/crossplane-contrib/ess-plugin-vault
+      atomic: true
+      wait: true
+      values:
+        - ./manifests/vault/vault-ess-plugin-values.yaml
+
   - kubernetes:
       description: "Create Crossplane StoreConfig"
       wait: true
       manifests:
         - ./manifests/vault/vault-corssplane-store.yaml
+  - kubernetes:
+      description: "Create Crossplane RuntimeConfig"
+      manifests:
+        - ./manifests/crossplane/runtime-config.yaml
+  - kubernetes:
+      description: "Create Crossplane Providers"
+      manifests:
+        - ./manifests/crossplane/providers.yaml
+  - exec:
+      description: "Wait for Providers to become healthy"
+      command: ./helpers.sh
+      arguments:
+        - validate_providers
+  - kubernetes:
+      description: "Configure Crossplane ProvidersConfig"
+      manifests:
+        - ./manifests/crossplane/provider-configs.yaml
+  - kubernetes:
+      description: "Install Crossplane BACK Stack CRD image"
+      manifests:
+        - ./manifests/crossplane/backstack.yaml
+
   - helm3:
       description: "Install Backstage"
       name: backstage
@@ -279,7 +321,7 @@ install:
       values:
         - ./manifests/backstage/backstage-values.yaml
   - kubernetes:
-      description: "Create Backstage App-Config ConfigMap"
+      description: "Create Backstage App-Config.yaml ConfigMap"
       wait: true
       manifests:
         - ./manifests/backstage/backstage-app-config.yaml
@@ -293,6 +335,7 @@ install:
       wait: true
       manifests:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
+
   - helm3:
       description: "Install ArgoCD"
       name: argocd
@@ -302,30 +345,34 @@ install:
       wait: true
       values:
         - ./manifests/argocd/argocd-values.yaml
+  - kubernetes:
+      description: "Create ArgoCD App-of-Apps"
+      wait: true
+      manifests:
+        - ./manifests/argocd/argocd-app-of-apps.yaml
+  - kubernetes:
+      description: "Create ArgoCD App-of-Clusters"
+      wait: true
+      manifests:
+        - ./manifests/argocd/argocd-app-clusters.yaml
+  - kubernetes:
+      description: "Create ArgoCD HUB Secret"
+      wait: true
+      manifests:
+        - ./manifests/argocd/argocd-hub-secret.yaml
+  - kubernetes:
+      description: "Create ArgoCD AppSet Kyverno"
+      wait: true
+      manifests:
+        - ./manifests/argocd/argocd-appset-kyverno.yaml
+  - kubernetes:
+      description: "Create ArgoCD AppSet Kyverno PSS Restricted"
+      wait: true
+      manifests:
+        - ./manifests/argocd/argocd-appset-kyverno-pss.yaml
   # step argo-kyverno-custom-policies
   # step kyverno-custom-policies
 
-  # - kubernetes:
-  #     description: "Define Crossplane RuntimeConfig"
-  #     manifests:
-  #       - ./manifests/providers/runtime-config.yaml
-  # - kubernetes:
-  #     description: "Define Crossplane Providers"
-  #     manifests:
-  #       - ./manifests/providers/providers.yaml
-  # - exec:
-  #     description: "Wait for providers to become healthy"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - validate_providers
-  # - kubernetes:
-  #     description: "Configure Crossplane Providers"
-  #     manifests:
-  #       - ./manifests/providers/provider-configs.yaml
-  # - kubernetes:
-  #     description: "Install BACK Stack Configuration"
-  #     manifests:
-  #       - ./manifests/back-stack.yaml
   # - exec:
   #     description: "Validate BACK Stack Configuration"
   #     command: ./helpers.sh

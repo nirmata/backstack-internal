@@ -60,7 +60,7 @@ deploy_secrets() {
       type: git
       url: ${REPOSITORY}
       password: ${GITHUB_TOKEN}
-      username: back-stack
+      username: ${GITHUB_TOKEN_USER}
 EOF
 
   ensure_namespace backstage
