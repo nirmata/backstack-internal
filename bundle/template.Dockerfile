@@ -20,9 +20,6 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloa
 RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
     apt-get update && apt-get install -y ca-certificates curl awscli
 
-# Install helm... YOLO need to do this better...
-#RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
 # Install KinD
 # TODO: need to get the version as a macro
 RUN curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64 && \
