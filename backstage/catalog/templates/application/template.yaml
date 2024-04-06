@@ -87,4 +87,4 @@ spec:
         content: |
           Your New Application Request has been published to GitHub
 
-           To finish deploying the application, review and accept the [pull request](${{ steps['publish'].output.remoteUrl }})
+          To finish deploying the application, review and accept the [pull request](${{ steps['publish'].output.remoteUrl }})
