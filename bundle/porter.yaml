@@ -370,32 +370,31 @@ install:
       wait: true
       manifests:
         - ./manifests/argocd/argocd-appset-kyverno-pss.yaml
-  # step argo-kyverno-custom-policies
-  # step kyverno-custom-policies
+  # TODO: step argo-kyverno-custom-policies
+  # TODO: step kyverno-custom-policies
 
   - exec:
       description: "Validate BACK Stack Configuration & Providers"
       command: ./helpers.sh
       arguments:
         - validate_back_stack_configuration
-
-  # - exec:
-  #     description: "Install Secrets"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - deploy_secrets
-  # - exec:
-  #     description: "Restart Crossplane ESS Vault Plugin"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - restart_pod
-  #       - crossplane-system
-  #       - ess-plugin-vault
-  # - exec:
-  #     description: "Grab ArgoCD Initial Password"
-  #     command: ./helpers.sh
-  #     arguments:
-  #       - return_argo_initial_pass
+  - exec:
+      description: "Install Secrets"
+      command: ./helpers.sh
+      arguments:
+        - deploy_secrets
+  - exec:
+      description: "Restart Crossplane ESS Vault Plugin"
+      command: ./helpers.sh
+      arguments:
+        - restart_pod
+        - crossplane-system
+        - ess-plugin-vault
+  - exec:
+      description: "Grab ArgoCD Initial Password"
+      command: ./helpers.sh
+      arguments:
+        - return_argo_initial_pass
 
 upgrade:
   - exec:
@@ -406,7 +405,7 @@ upgrade:
 
 uninstall:
   - exec:
-      description: "Uninstall BACK Stack"
+      description: "Check if installed on KinD and Uninstall BACK Stack"
       command: ./helpers.sh
       arguments:
         - uninstall
