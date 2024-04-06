@@ -97,16 +97,6 @@ EOF
 EOF
 }
 
-upgrade() {
-  echo World 2.0
-}
-
-uninstall() {
-  if [ "$CLUSTER_TYPE" = "kind" ]; then
-    kind delete cluster --name ${CLUSTER_NAME}
-  fi
-}
-
 ensure_namespace() {
   kubectl get namespaces -o name | grep -q $1 || kubectl create namespace $1
 }
@@ -147,6 +137,16 @@ restart_pod() {
 return_argo_initial_pass() {
   while ! kubectl -n argocd get secret argocd-initial-admin-secret &>/dev/null; do sleep 1; done
   kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d >~/argo_initial_passwd
+}
+
+upgrade() {
+  echo World 2.0
+}
+
+uninstall() {
+  if [ "$CLUSTER_TYPE" = "kind" ]; then
+    kind delete cluster --name ${CLUSTER_NAME}
+  fi
 }
 
 # Call the requested function and pass the arguments as-is
