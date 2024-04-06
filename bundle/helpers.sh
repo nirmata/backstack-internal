@@ -152,7 +152,6 @@ upgrade() {
 uninstall() {
   if [ "$CLUSTER_TYPE" = "kind" ]; then
     kind delete cluster --name ${CLUSTER_NAME}
-    exit 0
   else
     echo !!!====================================!!!\n
     echo !!! Uninstall process will remove all  !!!\n
