@@ -21,9 +21,10 @@ RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/
     apt-get update && apt-get install -y ca-certificates curl awscli
 
 # Install helm... YOLO need to do this better...
-RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+#RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Install KinD, need to get the version of this macroed in from an GH
+# Install KinD
+# TODO: need to get the version as a macro
 RUN curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64 && \
     chmod +x ./kind && \
     mv ./kind /usr/local/bin/kind

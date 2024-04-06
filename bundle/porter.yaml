@@ -172,8 +172,6 @@ outputs:
 mixins:
   - exec
   - docker
-  - kubernetes:
-      clientVersion: v1.29.1 #TODO: need this to be macro
   - helm3:
       clientVersion: v3.14.3 #TODO: need this to be macro
       repositories:
@@ -191,7 +189,11 @@ mixins:
           url: https://backstage.github.io/charts
         vault:
           url: https://helm.releases.hashicorp.com
-
+  # BUG: there is a mixin bug with the helm plugin which has a hardcoded version of kubectl
+  # need to install the kube mixin AFTER the helm3 one in order to leave the image with a semi
+  # working kubectl. There is still a layer with kubectl of older persuasion in the image though
+  - kubernetes:
+      clientVersion: v1.29.1 #TODO: need this to be macro
 install:
   - exec:
       description: "Ensure Kubernetes Connection"
