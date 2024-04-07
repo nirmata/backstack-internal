@@ -13,4 +13,4 @@ spec:
   type: service
   lifecycle: production
   owner: infrastructure
-  system: back-stack
+  system: backstack
