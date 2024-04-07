@@ -1,7 +1,7 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Configuration
 metadata:
-  name: back-stack
+  name: backstack
 spec:
   package: ${CROSSPLANE_IMAGE}:${CROSSPLANE_IMAGE_TAG}
   skipDependencyResolution: true

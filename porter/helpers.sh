@@ -13,7 +13,7 @@ validate_providers() {
 }
 
 validate_back_stack_configuration() {
-  kubectl wait configuration/back-stack --for='condition=healthy' --timeout=10m
+  kubectl wait configuration/backstack --for='condition=healthy' --timeout=10m
 }
 
 # deploy_backstack_hub() {

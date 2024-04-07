@@ -3,7 +3,7 @@ kind: Configuration
 metadata:
   name: backstack
   annotations:
-    meta.crossplane.io/maintainer: Back Stack <https://github.com/back-stack>
+    meta.crossplane.io/maintainer: BACK Stack <https://github.com/back-stack>
     meta.crossplane.io/source: github.com/back-stack
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
