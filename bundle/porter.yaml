@@ -35,7 +35,6 @@ credentials:
     required: false
     applyTo:
       - install
-  # optional Google auth for Backstage
   - name: backstage-google-auth-client-id
     required: false
     description: Google Auth IDP client id for SSO auth in Backstage
@@ -48,7 +47,6 @@ credentials:
     env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
     applyTo:
       - install
-  # optional Google auth for Argo
   - name: argocd-google-auth-client-id
     required: false
     description: Google Auth IDP client id for SSO auth in ArgoCD
@@ -173,7 +171,7 @@ mixins:
   - exec
   - docker
   - helm3:
-      clientVersion: v3.14.3 #TODO: need this to be macro
+      clientVersion: v3.14.3 # TODO: need this to be macro
       repositories:
         crossplane-stable:
           url: https://charts.crossplane.io/stable
@@ -193,7 +191,7 @@ mixins:
   # need to install the kube mixin AFTER the helm3 one in order to leave the image with a semi
   # working kubectl. There is still a layer with kubectl of older persuasion in the image though
   - kubernetes:
-      clientVersion: v1.29.1 #TODO: need this to be macro
+      clientVersion: v1.29.1 # TODO: need this to be macro
 install:
   - exec:
       description: "Ensure Kubernetes Connection"
@@ -408,8 +406,8 @@ upgrade:
         - upgrade
 
 uninstall:
-  #TODO: Need to add a cleanup step for all the SPOKE resources? or point to documents that
-  #explain what the expected process is
+  # TODO: Need to add a cleanup step for all the SPOKE resources? or point to documents that
+  # explain what the expected process is
   - exec:
       description: "Check if installed on KinD and Uninstall BACK Stack"
       command: ./helpers.sh

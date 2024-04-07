@@ -81,6 +81,7 @@ spec:
           version: ${{ parameters.version }}
           nodes_count: ${{ parameters.nodes_count }}
           nodes_instance_type: ${{ parameters.nodes_instance_type }}
+          kyverno_custom_repository: ${{ parameters.custom_kyverno_policies }}
     - id: publish
       name: Publish
       action: publish:github:pull-request
@@ -88,10 +89,11 @@ spec:
         allowedHosts: ['github.com']
         title: Request for new cluster
         description: |
-          Cluster ID: spoke-${{ parameters.cluster_id }}
-          Region:     ${{ parameters.region }}
-          Version:    ${{ parameters.version }}
-          Nodes:      ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
+          Cluster ID:       spoke-${{ parameters.cluster_id }}
+          Region:           ${{ parameters.region }}
+          Version:          ${{ parameters.version }}
+          Nodes:            ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
+          Custom Policies:  ${{ parameters.custom_kyverno_policies }}
         repoUrl: ${{ parameters.repo_url }}
         branchName: ${{ parameters.pull_request_branch_name }}
   output:

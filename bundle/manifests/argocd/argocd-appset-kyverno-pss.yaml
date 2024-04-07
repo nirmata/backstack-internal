@@ -18,11 +18,11 @@ spec:
       project: "default"
       source:
         repoURL: https://github.com/kyverno/kyverno
-        targetRevision: release-1.11 #TODO: need a way to set and control this
+        targetRevision: release-1.11 # TODO: need a way to set and control this
         path: charts/kyverno-policies
         helm:
           releaseName: "{{name}}-kyverno-policies"
-          #TODO: figure out how to make it configurable
+          # TODO: figure out how to make it configurable
           parameters:
             - name: "podSecurityStandard"
               value: restricted
