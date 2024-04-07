@@ -16,8 +16,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout template
+      - name: Checkout local repo
         uses: actions/checkout@v4
+
+      - name: Checkout BACK Stack Policy Repo
+        uses: actions/checkout@v4
+        repository: https://github.com/nirmata/backstack-internal-policies
+        token:
 
       - name: Install Kyverno CLI
         uses: kyverno/action-install-cli@v0.2.0
