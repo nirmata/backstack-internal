@@ -9,6 +9,7 @@ spec:
     repoURL: ${{ values.application_source }}
     path: ${{ values.application_source_path }}
     targetRevision: HEAD
-  destination: 
+    kyverno_custom_repository: ${{ values.custom_kyverno_policies }}
+  destination:
     name: ${{ values.cluster_id }}
     namespace: default
