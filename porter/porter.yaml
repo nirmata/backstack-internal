@@ -101,6 +101,23 @@ parameters:
       - aks
       - gke
       - xks
+  - name: kyverno-spoke-pss-level
+    env: KYVERNO_SPOKE_PSS_LEVEL
+    type: string
+    default: baseline
+    enum:
+      - baseline
+      - restricted
+      - privileged
+  - name: kyverno-spoke-pss-audit-enforce
+    env: KYVERNO_SPOKE_PSS_AUDIT_ENFORCE
+    type: string
+    default: Enforce
+    enum:
+      - Enforce
+      - Audit
+      - enforce
+      - audit
   - name: repository
     env: REPOSITORY
     type: string
