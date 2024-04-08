@@ -189,11 +189,11 @@ mixins:
           url: https://argoproj.github.io/argo-helm
         kyverno:
           url: https://kyverno.github.io/kyverno/
-        cert-manager:
+        jetstack:
           url: https://charts.jetstack.io
         backstage:
           url: https://backstage.github.io/charts
-        vault:
+        hashi:
           url: https://helm.releases.hashicorp.com
   # BUG: there is a mixin bug with the helm plugin which has a hardcoded version of kubectl
   # need to install the kube mixin AFTER the helm3 one in order to leave the image with a semi
