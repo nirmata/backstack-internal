@@ -192,6 +192,7 @@ mixins:
   # working kubectl. There is still a layer with kubectl of older persuasion in the image though
   - kubernetes:
       clientVersion: v1.29.1 # TODO: need this to be macro
+
 install:
   - exec:
       description: "Ensure Kubernetes Connection"
