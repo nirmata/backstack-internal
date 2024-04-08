@@ -55,12 +55,12 @@ jobs:
 
       - name: Build Porter bundle
         run: |
-          porter build --dir bundle --name ${{ env.IMAGE_NAME }}-porter-unstable --version ${{vars.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
+          porter build --dir porter --name ${{ env.IMAGE_NAME }}-porter-unstable --version ${{vars.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
 
-      - name: Publish Porter bundle
+      - name: Publish Porter porter
         run: |
-          porter publish --dir bundle
-          porter publish --dir bundle --tag latest --force
+          porter publish --dir porter
+          porter publish --dir porter --tag latest --force
 
   crossplane:
     runs-on: ubuntu-22.04
