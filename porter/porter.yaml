@@ -2,7 +2,7 @@ schemaType: Bundle
 schemaVersion: 1.0.1
 registry: "ghcr.io"
 name: backstack-porter
-description: "The BACK Stack hub cluster installation"
+description: "The BACK Stack HUB cluster installation"
 
 dockerfile: template.Dockerfile
 
@@ -324,7 +324,7 @@ install:
       values:
         - ./manifests/backstage/backstage-values.yaml
   - kubernetes:
-      description: "Create Backstage App-Config.yaml ConfigMap"
+      description: "Create Backstage app-config.yaml ConfigMap"
       wait: true
       manifests:
         - ./manifests/backstage/backstage-app-config.yaml
@@ -382,7 +382,7 @@ install:
       arguments:
         - validate_back_stack_configuration
   - exec:
-      description: "Install Secrets"
+      description: "Create Cloud Credential Secrets"
       command: ./helpers.sh
       arguments:
         - deploy_secrets
