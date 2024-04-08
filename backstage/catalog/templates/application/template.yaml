@@ -64,7 +64,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: demo/applications
+        targetPath: application-requests
         values:
           cluster_id: ${{ parameters.cluster_id | parseEntityRef | pick('name') }}
           application_name: ${{ parameters.name }}

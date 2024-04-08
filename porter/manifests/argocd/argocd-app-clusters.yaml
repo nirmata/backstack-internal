@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: ${REPOSITORY} # patched
-    path: demo/clusters
+    path: cluster-requests
     targetRevision: HEAD
   destination:
     name: hub
