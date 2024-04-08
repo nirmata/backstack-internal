@@ -21,9 +21,10 @@ jobs:
 
       - name: Checkout BACK Stack Policy Repo
         uses: actions/checkout@v4
-        repository: https://github.com/nirmata/backstack-internal-policies
-        # TODO: this needs to be documented when installing
-        token: ${{ secrets.DEPLOYMENT_PAT }}
+        with:
+          repository: https://github.com/nirmata/backstack-internal-policies
+          # TODO: this needs to be documented when installing
+          token: ${{ secrets.DEPLOYMENT_PAT }}
 
       - name: Install Kyverno CLI
         uses: kyverno/action-install-cli@v0.2.0

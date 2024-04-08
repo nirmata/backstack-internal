@@ -21,7 +21,8 @@ jobs:
 
       - name: Checkout Kyverno PSS Restricted Policies Repo
         uses: actions/checkout@v4
-        repository: git@github.com:kyverno/policies.git
+        with:
+          repository: git@github.com:kyverno/policies.git
 
       - name: Install Kyverno CLI
         uses: kyverno/action-install-cli@v0.2.0
