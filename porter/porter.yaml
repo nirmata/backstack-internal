@@ -20,21 +20,29 @@ credentials:
   - name: azure-credentials
     required: false
     env: AZURE_CREDENTIALS
-    description: Azure credentials in JSON file format from az ad sp create-for-rbac
+    description: Azure credentials in JSON file format from -- az ad sp create-for-rbac
+    path: /home/nonroot/.azure/credentials.json
     applyTo:
       - install
+      - upgrade
+      - uninstall
   - name: aws-credentials
     required: false
     env: AWS_CREDENTIALS
-    description: AWS Credentials file set as [default] profile
+    description: AWS Credentials ~/.aws/credentials file set as [default] profile
+    path: /home/nonroot/.aws/credentials
     applyTo:
       - install
+      - upgrade
+      - uninstall
   - name: kubeconfig
     path: /home/nonroot/.kube/config
     description: Local Kubeconfig file to use for HUB installation. Skip if using KinD
     required: false
     applyTo:
       - install
+      - upgrade
+      - uninstall
   - name: backstage-google-auth-client-id
     required: false
     description: Google Auth IDP client id for SSO auth in Backstage
@@ -96,7 +104,7 @@ parameters:
   - name: repository
     env: REPOSITORY
     type: string
-    default: https://github.com/nirmata/backstack-internal
+    default: https://github.com/nirmata/backstack-internal-requests
   - name: github-token-user
     env: GITHUB_TOKEN_USER
     type: string
@@ -199,6 +207,7 @@ install:
       command: ./helpers.sh
       arguments:
         - ensure_kubernetes
+
   - helm3:
       description: "Install Kyverno"
       name: kyverno
@@ -217,6 +226,7 @@ install:
         podSecurityStandard: restricted
         validationFailureAction: Enforce
         podSecuritySeverity: High
+
   - helm3:
       description: "Install cert-manager"
       name: cert-manager

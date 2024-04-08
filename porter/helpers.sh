@@ -159,7 +159,7 @@ uninstall() {
     echo !!! Uninstall process will remove all  !!!\n
     echo !!! helm charts that were installed    !!!\n
     echo !!! the process will NOT delete the    !!!\n
-    echo !!! namespaces. It is up to you to do  !!!\n
+    echo !!! namespaces. That is up to you to do!!!\n
     echo !!!====================================!!!\n
   fi
 }
