@@ -125,8 +125,8 @@ parameters:
     env: VAULT_HOST
     type: string
     default: vault-7f000001.nip.io
-  - name: argo-google-auth
-    env: ARGO_GOOGLE_AUTH
+  - name: argo-use-google-auth
+    env: ARGO_USE_GOOGLE_AUTH
     type: string
     default: no_argo_auth
   - name: backstage-image-repository
@@ -145,8 +145,8 @@ parameters:
     env: CROSSPLANE_IMAGE_TAG
     type: string
     default: latest
-  - name: backstage-google-auth
-    env: BACKSTAGE_GOOGLE_AUTH
+  - name: backstage-use-google-auth
+    env: BACKSTAGE_USE_GOOGLE_AUTH
     type: string
     default: no_backstage_auth
   - name: deploy-ingress-controller
