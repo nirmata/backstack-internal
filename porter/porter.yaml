@@ -104,7 +104,7 @@ parameters:
   - name: kyverno-hub-pss-level
     env: KYVERNO_HUB_PSS_LEVEL
     type: string
-    default: baseline
+    default: restricted
     enum:
       - baseline
       - restricted
@@ -299,9 +299,9 @@ install:
       atomic: true
       wait: true
       set:
-        server.ingress.hosts[0].host: ${bundle.parameters.vault-host}
-        server.ingress.tls[0].hosts[0]: ${bundle.parameters.vault-host}
-        server.ingress.tls[0].hosts[0].secretName: vault-tls
+        server.ingress.hosts[0].host: "${bundle.parameters.vault-host}"
+        server.ingress.tls[0].hosts[0]: "${bundle.parameters.vault-host}"
+        server.ingress.tls[0].secretName: vault-tls
       values:
         - ./manifests/vault/vault-values.yaml
   - kubernetes:
@@ -359,7 +359,7 @@ install:
       atomic: true
       wait: true
       set:
-        ingress.host: ${bundle.parameters.backstage-host}
+        ingress.host: "${bundle.parameters.backstage-host}"
       values:
         - ./manifests/backstage/backstage-values.yaml
   - kubernetes:
@@ -386,9 +386,9 @@ install:
       atomic: true
       wait: true
       set:
-        server.ingress.hosts[0]: ${bundle.parameters.argocd-host}
-        server.ingressGrpc.hosts[0]: ${bundle.parameters.argocd-host}
-        configs.cm.url: https://${bundle.parameters.argocd-host}
+        server.ingress.hosts[0]: "${bundle.parameters.argocd-host}"
+        server.ingressGrpc.hosts[0]: "${bundle.parameters.argocd-host}"
+        configs.cm.url: "https://${bundle.parameters.argocd-host}"
       values:
         - ./manifests/argocd/argocd-values.yaml
   - kubernetes:
