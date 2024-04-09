@@ -1,8 +1,10 @@
 ingress:
   enabled: true
+  # TODO: make the below configurable
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+  # TODO: make the below configurable
   tls:
     enabled: true
     secretName: backstage-tls

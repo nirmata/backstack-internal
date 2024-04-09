@@ -13,8 +13,8 @@ configs:
         name: Google
     exec.enabled: "false"
     server.rbac.log.enforce.enable: "false"
-    application.resourceTrackingMethod: annotation
-    url: https://${ARGOCD_HOST}
+    application.resourceTrackingMethod: annotation+label
+    application.instanceLabelKey: argocd.backstack.dev/resource
 server:
   deploymentAnnotations:
     backstage.io/kubernetes-id: argocd-service
@@ -24,13 +24,9 @@ server:
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-    hosts:
-    - ${ARGOCD_HOST} # patched
   ingressGrpc:
     enabled: true
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
       cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-    hosts:
-    - ${ARGOCD_HOST} # patched
