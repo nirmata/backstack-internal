@@ -7,19 +7,20 @@ spec:
   exceptions:
   - policyName: disallow-capabilities-strict
     ruleNames:
-    - autogen-require-drop-all
+    - require-drop-all
   - policyName: require-run-as-nonroot
     ruleNames:
-    - autogen-run-as-non-root
+    - run-as-non-root
   - policyName: restrict-seccomp-strict
     ruleNames:
-    - autogen-check-seccomp-strict
+    - check-seccomp-strict
   match:
     any:
     - resources:
         kinds:
         - Pod
         - Deployment
+        - ReplicaSet
         namespaces:
         - crossplane-system
         names:

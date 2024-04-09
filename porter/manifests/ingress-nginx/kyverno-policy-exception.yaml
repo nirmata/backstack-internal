@@ -1,19 +1,20 @@
 apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
-  name: ingress-nginx-kind-host-ports
+  name: ingress-nginx-host-ports
   namespace: ingress-nginx
 spec:
   exceptions:
   - policyName: disallow-host-ports
     ruleNames:
-    - autogen-host-ports-none
+    - host-ports-none
   match:
     any:
     - resources:
         kinds:
         - Pod
         - Deployment
+        - ReplicaSet
         namespaces:
         - ingress-nginx
         names:
