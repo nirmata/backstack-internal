@@ -3,6 +3,7 @@ kind: PolicyException
 metadata:
   name: system-backstack-operation
   namespace: kyverno
+spec:
   exceptions:
   - policyName: disallow-host-path
     ruleNames:
