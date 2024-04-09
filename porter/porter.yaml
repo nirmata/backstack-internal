@@ -101,16 +101,16 @@ parameters:
       - aks
       - gke
       - xks
-  - name: kyverno-spoke-pss-level
-    env: KYVERNO_SPOKE_PSS_LEVEL
+  - name: kyverno-hub-pss-level
+    env: KYVERNO_HUB_PSS_LEVEL
     type: string
     default: baseline
     enum:
       - baseline
       - restricted
       - privileged
-  - name: kyverno-spoke-pss-audit-enforce
-    env: KYVERNO_SPOKE_PSS_AUDIT_ENFORCE
+  - name: kyverno-hub-pss-audit-enforce
+    env: KYVERNO_HUB_PSS_AUDIT_ENFORCE
     type: string
     default: Enforce
     enum:
@@ -240,8 +240,8 @@ install:
       atomic: true
       wait: true
       set:
-        podSecurityStandard: restricted
-        validationFailureAction: Enforce
+        podSecurityStandard: ${bundle.parameters.kyverno-hub-pss-level}
+        validationFailureAction: ${bundle.parameters.kyverno-hub-pss-audit-enforce}
         podSecuritySeverity: High
   - kubernetes:
       description: "Apply Kyverno Policy Exceptions for HUB Components"
