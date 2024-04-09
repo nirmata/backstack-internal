@@ -243,6 +243,12 @@ install:
         podSecurityStandard: restricted
         validationFailureAction: Enforce
         podSecuritySeverity: High
+  - kubernetes:
+      description: "Apply Kyverno Policy Exceptions for HUB Components"
+      wait: true
+      manifests:
+        - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
+        - ./manifests/crossplane/kyverno-policy-exception.yaml
 
   - helm3:
       description: "Install cert-manager"

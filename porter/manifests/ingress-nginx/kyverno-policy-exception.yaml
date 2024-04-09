@@ -17,4 +17,4 @@ spec:
         namespaces:
         - ingress-nginx
         names:
-        - ingress-nginx*
+        - ingress-nginx
