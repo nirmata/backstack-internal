@@ -8,12 +8,6 @@ server:
     ingressClassName: nginx
     annotations:
       cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-    hosts:
-    - host: ${VAULT_HOST} # patched
-    tls:
-    - hosts:
-      - ${VAULT_HOST} # patched
-      secretName: vault-tls
   volumes:
   - name: crossplane-ess-plugin
     configMap:

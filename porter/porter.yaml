@@ -298,6 +298,10 @@ install:
       chart: hashi/vault
       atomic: true
       wait: true
+      set:
+        server.ingress.hosts[0].host: ${bundle.parameters.vault-host}
+        server.ingress.tls[0].hosts[0]: ${bundle.parameters.vault-host}
+        server.ingress.tls[0].hosts[0].secretName: vault-tls
       values:
         - ./manifests/vault/vault-values.yaml
   - kubernetes:
