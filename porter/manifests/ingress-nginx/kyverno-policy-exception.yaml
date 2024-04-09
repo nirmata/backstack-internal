@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
-  name: ingress-nginx-operation
+  name: ingress-nginx-backstack-operation
   namespace: ingress-nginx
 spec:
   exceptions:
@@ -19,4 +19,4 @@ spec:
         namespaces:
         - ingress-nginx
         names:
-        - ingress-nginx
+        - ingress-nginx*

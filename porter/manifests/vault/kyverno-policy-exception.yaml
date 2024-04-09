@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
-  name: vault-operation
+  name: vault-backstack-operation
   namespace: vault
 spec:
   exceptions:
@@ -13,6 +13,14 @@ spec:
     ruleNames:
     - check-seccomp-strict
     - autogen-check-seccomp-strict
+  - policyName: disallow-host-path
+    ruleNames:
+    - host-path
+    - autogen-host-path
+  - policyName: disallow-privileged-containers
+    ruleNames:
+    - privileged-containers
+    - autogen-privileged-containers
   match:
     any:
     - resources:
