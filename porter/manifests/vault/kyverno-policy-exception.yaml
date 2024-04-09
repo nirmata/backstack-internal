@@ -2,7 +2,7 @@ apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: vault-backstack-operation
-  namespace: vault
+  namespace: kyverno
 spec:
   exceptions:
   - policyName: disallow-capabilities-strict
@@ -21,6 +21,18 @@ spec:
     ruleNames:
     - privileged-containers
     - autogen-privileged-containers
+  - policyName: disallow-privilege-escalation
+    ruleNames:
+    - privilege-escalation
+    - autogen-privilege-escalation
+  - policyName: require-run-as-nonroot
+    ruleNames:
+    - run-as-non-root
+    - autogen-run-as-non-root
+  - policyName: restrict-volume-types
+    ruleNames:
+    - restricted-volumes
+    - autogen-restricted-volumes
   match:
     any:
     - resources:
@@ -29,8 +41,12 @@ spec:
         - Deployment
         - ReplicaSet
         - StatefulSet
+        - PersistentVolumeClaim
         namespaces:
         - vault
         names:
         # TODO: this should be more targeted than blanket *
         - vault*
+        - local-path-*
+        - helper-pod-create-pvc-*
+        - data-vault-*

@@ -2,8 +2,7 @@ apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: system-backstack-operation
-  namespace: kube-system
-spec:
+  namespace: kyverno
   exceptions:
   - policyName: disallow-host-path
     ruleNames:

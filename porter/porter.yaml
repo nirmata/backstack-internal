@@ -232,6 +232,14 @@ install:
       chart: kyverno/kyverno
       atomic: true
       wait: true
+  - kubernetes:
+      description: "Apply Kyverno Policy Exceptions for HUB Components"
+      wait: true
+      manifests:
+        - ./manifests/system/kyverno-policy-exception.yaml
+        - ./manifests/vault/kyverno-policy-exception.yaml
+        - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
+        - ./manifests/crossplane/kyverno-policy-exception.yaml
   - helm3:
       description: "Install Kyverno PSS Restricted in Enforce Mode"
       name: kyverno-policies
@@ -243,12 +251,6 @@ install:
         podSecurityStandard: ${bundle.parameters.kyverno-hub-pss-level}
         validationFailureAction: ${bundle.parameters.kyverno-hub-pss-audit-enforce}
         podSecuritySeverity: High
-  - kubernetes:
-      description: "Apply Kyverno Policy Exceptions for HUB Components"
-      wait: true
-      manifests:
-        - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
-        - ./manifests/crossplane/kyverno-policy-exception.yaml
 
   - helm3:
       description: "Install cert-manager"
