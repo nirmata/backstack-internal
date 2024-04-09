@@ -17,6 +17,14 @@ spec:
     ruleNames:
     - require-drop-all
     - autogen-require-drop-all
+  - policyName: require-run-as-nonroot
+    ruleNames:
+    - run-as-non-root
+    - autogen-run-as-non-root
+  - policyName: restrict-seccomp-strict
+    ruleNames:
+    - check-seccomp-strict
+    - autogen-check-seccomp-strict
   match:
     any:
     - resources:
