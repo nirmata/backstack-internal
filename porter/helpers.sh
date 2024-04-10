@@ -20,36 +20,6 @@ validate_back_stack_configuration() {
   kubectl wait configuration/backstack --for='condition=healthy' --timeout=10m
 }
 
-# deploy_backstack_hub() {
-#   # this is a silly way to solve the problem of waiting for the custom CRDs to
-#   # show up and be ready, but for now its an easy enough way to get around it
-#   # not dropping out of the install. This is NOT a fool proof way of solving this
-#   echo "Waiting for Backstack CRDs to be ready"
-#   while ! kubectl get crd hubs.backstack.dev &>/dev/null; do sleep 1; done
-#   # deploy hub
-#   kubectl apply -f - <<-EOF
-#       apiVersion: backstack.dev/v1alpha1
-#       kind: Hub
-#       metadata:
-#         name: hub
-#       spec:
-#         parameters:
-#           clusterId: local
-#           repository: ${REPOSITORY}
-#           backstage:
-#             host: ${BACKSTAGE_HOST}
-#             image:
-#               registry: ghcr.io
-#               repository: back-stack/showcase-backstage
-#               tag: latest
-#               pullPolicy: Always
-#           argocd:
-#             host: ${ARGOCD_HOST}
-#           vault:
-#             host: ${VAULT_HOST}
-# EOF
-# }
-
 deploy_secrets() {
   ensure_namespace argocd
   kubectl apply -f - <<-EOF
@@ -122,10 +92,6 @@ ensure_kubernetes() {
   # TODO: look at utilizing the aws mixin instead of doing all of this
   # TODO: if the above works, remove the awscli from the dockerfile tempalte
   elif [ "$CLUSTER_TYPE" = "eks" ]; then
-    # if [ ! -d "~/.aws" ]; then
-    #   mkdir ~/.aws
-    #   echo -n "$AWS_CREDENTIALS" > ~/.aws/credentials
-    # fi
     # there is no difference between internal and external
     # when we are dealing with anything other than KinD
     cp ${K8S_CFG_INTERNAL} ${K8S_CFG_EXTERNAL}
