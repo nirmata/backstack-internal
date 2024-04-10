@@ -11,7 +11,7 @@ ingress:
 backstage:
   image:
     registry: ${REGISTRY}
-    repository: ${BACKSTAGE_IMAGE} #needs to be patched in
+    repository: ${BACKSTAGE_IMAGE_REPOSITORY} #needs to be patched in
     tag: ${BACKSTAGE_IMAGE_TAG}
     pullPolicy: Always
   extraEnvVarsSecrets:
