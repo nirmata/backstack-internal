@@ -330,7 +330,7 @@ install:
       description: "Create Crossplane StoreConfig"
       wait: true
       manifests:
-        - ./manifests/vault/vault-corssplane-store.yaml
+        - ./manifests/vault/vault-crossplane-store.yaml
   - kubernetes:
       description: "Create Crossplane RuntimeConfig"
       manifests:
