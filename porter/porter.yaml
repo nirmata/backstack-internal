@@ -397,7 +397,7 @@ install:
       set:
         ingress.host: ${bundle.parameters.backstage-host}
         backstage.image.registry: ${bundle.parameters.registry}
-        backstage.image.repository: ${bundle.parameters.backstage-image}
+        backstage.image.repository: ${bundle.parameters.backstage-repository}
         backstage.image.tag: ${bundle.parameters.backstage-image-tag}
       values:
         - ./manifests/backstage/backstage-values.yaml
