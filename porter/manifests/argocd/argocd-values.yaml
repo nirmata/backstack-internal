@@ -6,7 +6,7 @@ configs:
       connectors:
       - config:
           issuer: https://accounts.google.com
-          clientID: {ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+          clientID: ${ARGOCD_GOOGLE_AUTH_CLIENT_ID}
           clientSecret: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
         type: oidc
         id: google

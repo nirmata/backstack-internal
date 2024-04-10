@@ -4,6 +4,7 @@ set -euo pipefail
 K8S_CFG_INTERNAL=/home/nonroot/.kube/config
 # This is internal to the container, it does not relate to local system paths
 K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
+# TODO: move this to a parameter
 CLUSTER_NAME=backstack-hub
 
 do_envsubst_on_file() {
@@ -11,10 +12,12 @@ do_envsubst_on_file() {
 }
 
 create_registry_secret(){
-  # TODO: need to add a check if secret already exists. if it does print that we are deleting and re-creating
-  # then actually delete and re-create.
   ensure_namespace $2
-  kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
+  if $(kubectl get secret $1 -n $2); then
+    echo Registry Secret already exists
+  else
+    kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
+  fi
 }
 
 validate_providers() {

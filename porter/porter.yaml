@@ -250,7 +250,7 @@ install:
       atomic: true
       wait: true
   - helm3:
-      description: "Install Kyverno PSS Restricted in Enforce Mode"
+      description: "Install Kyverno PSS ${bundle.parameters.kyverno-hub-pss-level} in ${bundle.parameters.kyverno-hub-pss-audit-enforce} Mode"
       name: kyverno-policies
       namespace: kyverno
       chart: kyverno/kyverno-policies
@@ -268,6 +268,8 @@ install:
         - ./manifests/vault/kyverno-policy-exception.yaml
         - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
         - ./manifests/crossplane/kyverno-policy-exception.yaml
+        - ./manifests/backstage/kyverno-policy-exception.yaml
+        #- ./manifests/argocd/kyverno-policy-exception.yaml
 
   # cert-manager
   - helm3:
