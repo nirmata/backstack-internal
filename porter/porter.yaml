@@ -470,7 +470,7 @@ install:
       set:
         server.ingress.hostname: ${bundle.parameters.argocd-host}
         server.ingress.tls: true
-        server.ingressGrpc.hostname: ${bundle.parameters.argocd-host}
+        server.ingressGrpc.hostname: grpc.${bundle.parameters.argocd-host}
         server.ingressGrpc.tls: true
         configs.cm.url: https://${bundle.parameters.argocd-host}
       values:

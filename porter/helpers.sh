@@ -13,11 +13,8 @@ do_envsubst_on_file() {
 
 create_registry_secret(){
   ensure_namespace $2
-  if $(kubectl get secret $1 -n $2); then
-    echo Registry Secret already exists
-  else
-    kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
-  fi
+  # TODO: add a way to check if exists and create only if it doesnt
+  kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
 }
 
 validate_providers() {
