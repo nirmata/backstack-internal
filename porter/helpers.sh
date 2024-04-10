@@ -7,7 +7,7 @@ K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
 CLUSTER_NAME=backstack-hub
 
 do_envsubst_on_file() {
-  envsubst < $1 > envsub-$1
+  envsubst < $1 > $1-envsub
 }
 
 validate_providers() {
