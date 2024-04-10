@@ -396,13 +396,22 @@ install:
       wait: true
       set:
         ingress.host: "${bundle.parameters.backstage-host}"
+        backstage.image.registry: "${bundle.parameters.registry}"
+        backstage.image.repository: "${bundle.parameters.backstage-image}"
+        backstage.image.tag: "${bundle.parameters.backstage-image-tag}"
       values:
         - ./manifests/backstage/backstage-values.yaml
+  - exec:
+      description: "envsubst"
+      command: ./helpers.sh
+      arguments:
+        - do_envsubst_on_file
+        - ./manifests/backstage/backstage-app-config.yaml
   - kubernetes:
       description: "Create Backstage app-config.yaml ConfigMap"
       wait: true
       manifests:
-        - ./manifests/backstage/backstage-app-config.yaml
+        - ./manifests/backstage/backstage-app-config.yaml-envsub
   - kubernetes:
       description: "Create Backstage ClusterRole"
       wait: true
@@ -428,16 +437,28 @@ install:
         configs.cm.url: "https://${bundle.parameters.argocd-host}"
       values:
         - ./manifests/argocd/argocd-values.yaml
+  - exec:
+      description: "envsubst"
+      command: ./helpers.sh
+      arguments:
+        - do_envsubst_on_file
+        - ./manifests/argocd/argocd-app-of-apps.yaml
   - kubernetes:
       description: "Create ArgoCD App-of-Apps"
       wait: true
       manifests:
-        - ./manifests/argocd/argocd-app-of-apps.yaml
+        - ./manifests/argocd/argocd-app-of-apps.yaml-envsub
+  - exec:
+      description: "envsubst"
+      command: ./helpers.sh
+      arguments:
+        - do_envsubst_on_file
+        - ./manifests/argocd/argocd-app-clusters.yaml
   - kubernetes:
       description: "Create ArgoCD App-of-Clusters"
       wait: true
       manifests:
-        - ./manifests/argocd/argocd-app-clusters.yaml
+        - ./manifests/argocd/argocd-app-clusters.yaml-envsub
   - kubernetes:
       description: "Create ArgoCD HUB Secret"
       wait: true
