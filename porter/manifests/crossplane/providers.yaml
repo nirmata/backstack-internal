@@ -92,7 +92,7 @@ spec:
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: upbound-provider-family-gcp
+  name: upbound-provider-gcp-gke
 spec:
   package: xpkg.upbound.io/upbound/provider-gcp-gke:v1.0.2
   skipDependencyResolution: true
