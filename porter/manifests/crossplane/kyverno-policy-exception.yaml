@@ -34,3 +34,4 @@ spec:
         # TODO: this should be more targeted than blanket *
         - crossplane*
         - ess-plugin-*
+        - upbound-provider-*
