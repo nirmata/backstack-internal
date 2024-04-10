@@ -447,6 +447,7 @@ install:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
 
   # ArgoCD
+  # TODO: there should be a better way we overwrite the argocd-cm with the needed dex.cfg bits for auth
   - exec:
       description: "Template ArgoCD dex.cfg"
       command: ./helpers.sh
