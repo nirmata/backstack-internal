@@ -9,6 +9,10 @@ spec:
     ruleNames:
     - require-drop-all
     - autogen-require-drop-all
+  - policyName: disallow-privilege-escalation
+    ruleNames:
+    - privilege-escalation
+    - autogen-privilege-escalation
   - policyName: require-run-as-nonroot
     ruleNames:
     - run-as-non-root
@@ -29,4 +33,4 @@ spec:
         names:
         # TODO: this should be more targeted than blanket *
         - crossplane*
-        - ess-plugin-vault
+        - ess-plugin-*
