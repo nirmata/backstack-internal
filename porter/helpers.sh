@@ -7,7 +7,7 @@ K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
 CLUSTER_NAME=backstack-hub
 
 validate_providers() {
-  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-{gke}}}; do
+  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-family-{aws,azure,gcp}},upbound-provider-aws-{ec2,eks,iam},upbound-provider-azure-{containerservice,network},upbound-provider-gcp-{gke}}; do
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
   done
 }
