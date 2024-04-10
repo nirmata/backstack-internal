@@ -6,3 +6,5 @@ spec:
   package: ${REGISTRY}/${CROSSPLANE_IMAGE}:${CROSSPLANE_IMAGE_TAG}
   skipDependencyResolution: true
   packagePullPolicy: Always
+  packagePullSecret:
+    - name: registry-credentials

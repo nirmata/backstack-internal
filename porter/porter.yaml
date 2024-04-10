@@ -376,7 +376,7 @@ install:
       arguments:
         - validate_providers
   - exec:
-      description: "envsubst"
+      description: "Template Crossplane ProvidersConfig"
       command: ./helpers.sh
       arguments:
         - do_envsubst_on_file
@@ -386,13 +386,13 @@ install:
       manifests:
         - ./manifests/crossplane/provider-configs.yaml-envsub
   - exec:
-      description: "envsubst"
+      description: "Template Crossplane BACK Stack Configuration"
       command: ./helpers.sh
       arguments:
         - do_envsubst_on_file
         - ./manifests/crossplane/backstack.yaml
   - kubernetes:
-      description: "Install Crossplane BACK Stack CRD image"
+      description: "Install Crossplane BACK Stack Configuration"
       manifests:
         - ./manifests/crossplane/backstack.yaml-envsub
   - exec:
@@ -421,11 +421,11 @@ install:
         backstage.image.registry: ${bundle.parameters.registry}
         backstage.image.repository: ${bundle.parameters.backstage-image-repository}
         backstage.image.tag: ${bundle.parameters.backstage-image-tag}
-        backstage.image.pullSecrets: [registry-credentials]
+        backstage.image.pullSecrets: "registry-credentials"
       values:
         - ./manifests/backstage/backstage-values.yaml
   - exec:
-      description: "envsubst"
+      description: "Template Backstage app-config.yaml ConfigMap"
       command: ./helpers.sh
       arguments:
         - do_envsubst_on_file
@@ -461,7 +461,7 @@ install:
       values:
         - ./manifests/argocd/argocd-values.yaml
   - exec:
-      description: "envsubst"
+      description: "Template ArgoCD App-of-Apps"
       command: ./helpers.sh
       arguments:
         - do_envsubst_on_file
@@ -472,7 +472,7 @@ install:
       manifests:
         - ./manifests/argocd/argocd-app-of-apps.yaml-envsub
   - exec:
-      description: "envsubst"
+      description: "Template ArgoCD App-of-Clusters"
       command: ./helpers.sh
       arguments:
         - do_envsubst_on_file
