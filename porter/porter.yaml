@@ -234,12 +234,13 @@ mixins:
       clientVersion: v1.29.1 # TODO: need this to be macro
 
 install:
+  # Kubernetes
   - exec:
       description: "Ensure Kubernetes Connection"
       command: ./helpers.sh
       arguments:
         - ensure_kubernetes
-
+  # Kyverno
   - helm3:
       description: "Install Kyverno"
       name: kyverno
@@ -266,7 +267,7 @@ install:
         - ./manifests/vault/kyverno-policy-exception.yaml
         - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
         - ./manifests/crossplane/kyverno-policy-exception.yaml
-
+  # cert-manager
   - helm3:
       description: "Install cert-manager"
       name: cert-manager
@@ -281,7 +282,7 @@ install:
       wait: true
       manifests:
         - ./manifests/cert-manager/cert-manager-cluster-issuer.yaml
-
+  # ingress-nginx
   - helm3:
       description: "Install ingress-nginx"
       name: ingress-nginx
@@ -297,7 +298,7 @@ install:
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
-
+  # Crossplane
   - helm3:
       description: "Install Crossplane"
       name: crossplane
@@ -307,7 +308,7 @@ install:
       wait: true
       set:
         args: "{--enable-external-secret-stores}"
-
+  # Vault
   - helm3:
       description: "Install Vault"
       name: vault
@@ -326,7 +327,7 @@ install:
       wait: true
       manifests:
         - ./manifests/vault/vault-ess-configmap.yaml
-
+  # Crossplane: ESS Vault, Providers, ProviderConfigs
   - helm3:
       description: "Install Crossplane Vault ESS plugin"
       name: ess-plugin-vault
@@ -373,7 +374,12 @@ install:
       description: "Install Crossplane BACK Stack CRD image"
       manifests:
         - ./manifests/crossplane/backstack.yaml
-
+  - exec:
+      description: "Create Cloud Credential Secrets"
+      command: ./helpers.sh
+      arguments:
+        - deploy_secrets
+  # Backstage
   - helm3:
       description: "Install Backstage"
       name: backstage
@@ -400,7 +406,7 @@ install:
       wait: true
       manifests:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
-
+  # ArgoCD
   - helm3:
       description: "Install ArgoCD"
       name: argocd
@@ -442,16 +448,12 @@ install:
   # TODO: step argo-kyverno-custom-policies
   # TODO: step kyverno-custom-policies
 
+  # Post install validations
   - exec:
       description: "Validate BACK Stack Configuration & Providers"
       command: ./helpers.sh
       arguments:
         - validate_back_stack_configuration
-  - exec:
-      description: "Create Cloud Credential Secrets"
-      command: ./helpers.sh
-      arguments:
-        - deploy_secrets
   - exec:
       description: "Restart Crossplane ESS Vault Plugin"
       command: ./helpers.sh
