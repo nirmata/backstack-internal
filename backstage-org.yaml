@@ -1,8 +1,9 @@
+# TODO: need to figure out if these should live in main repo/request repo/or be configurable
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
-  name: acme-corp
-  description: The acme-corp organization
+  name: backstack-acme-corp
+  description: The backstack-acme-corp organization
   links:
     - url: http://www.acme.com/
       title: Website
@@ -24,4 +25,4 @@ metadata:
 spec:
   type: department
   # Intentional no profile for testing
-  parent: acme-corp
+  parent: backstack-acme-corp
