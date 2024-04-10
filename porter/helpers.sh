@@ -11,6 +11,8 @@ do_envsubst_on_file() {
 }
 
 create_registry_secret(){
+  # TODO: need to add a check if secret already exists. if it does print that we are deleting and re-creating
+  # then actually delete and re-create.
   kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
 }
 

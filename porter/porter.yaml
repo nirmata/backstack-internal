@@ -421,7 +421,7 @@ install:
         backstage.image.registry: ${bundle.parameters.registry}
         backstage.image.repository: ${bundle.parameters.backstage-image-repository}
         backstage.image.tag: ${bundle.parameters.backstage-image-tag}
-        backstage.image.pullSecrets: "registry-credentials"
+        backstage.image.pullSecrets: "[registry-credentials]"
       values:
         - ./manifests/backstage/backstage-values.yaml
   - exec:
