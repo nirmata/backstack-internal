@@ -304,7 +304,7 @@ install:
 
   # Crossplane
   - exec:
-      description: "Ensure Kubernetes Connection"
+      description: "Create Crossplane Registry Secret"
       command: ./helpers.sh
       # TODO: document the need for registry permissions for the Github Token
       arguments:
@@ -403,7 +403,7 @@ install:
 
   # Backstage
   - exec:
-      description: "Ensure Kubernetes Connection"
+      description: "Create Backstage Registry Secret"
       command: ./helpers.sh
       arguments:
         - create_registry_secret
@@ -421,7 +421,7 @@ install:
         backstage.image.registry: ${bundle.parameters.registry}
         backstage.image.repository: ${bundle.parameters.backstage-image-repository}
         backstage.image.tag: ${bundle.parameters.backstage-image-tag}
-        backstage.image.pullSecrets[0]: "registry-credentials"
+        backstage.image.pullSecrets[0]: registry-credentials
       values:
         - ./manifests/backstage/backstage-values.yaml
   - exec:
