@@ -25,6 +25,10 @@ spec:
     ruleNames:
     - check-seccomp-strict
     - autogen-check-seccomp-strict
+  - policyName: restrict-volume-types
+    ruleNames:
+    - restricted-volumes
+    - autogen-restricted-volumes
   match:
     any:
     - resources:
@@ -43,3 +47,5 @@ spec:
         - kindnet*
         - local-path*
         - coredns*
+        - kube-scheduler*
+        - kube-controller*
