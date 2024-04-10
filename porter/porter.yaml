@@ -303,6 +303,14 @@ install:
           jsonPath: "{.status.loadBalancer.ingress}"
 
   # Crossplane
+  - exec:
+      description: "Ensure Kubernetes Connection"
+      command: ./helpers.sh
+      # TODO: document the need for registry permissions for the Github Token
+      arguments:
+        - create_registry_secret
+        - registry-credentials
+        - crossplane-system
   - helm3:
       description: "Install Crossplane"
       name: crossplane
@@ -312,6 +320,7 @@ install:
       wait: true
       set:
         args: "{--enable-external-secret-stores}"
+        imagePullSecrets: "{registry-credentials}"
 
   # Vault
   - helm3:
@@ -393,6 +402,13 @@ install:
         - deploy_secrets
 
   # Backstage
+  - exec:
+      description: "Ensure Kubernetes Connection"
+      command: ./helpers.sh
+      arguments:
+        - create_registry_secret
+        - registry-credentials
+        - backstage
   - helm3:
       description: "Install Backstage"
       name: backstage
@@ -405,6 +421,7 @@ install:
         backstage.image.registry: ${bundle.parameters.registry}
         backstage.image.repository: ${bundle.parameters.backstage-image-repository}
         backstage.image.tag: ${bundle.parameters.backstage-image-tag}
+        backstage.image.pullSecrets: [registry-credentials]
       values:
         - ./manifests/backstage/backstage-values.yaml
   - exec:

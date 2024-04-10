@@ -10,6 +10,10 @@ do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
 }
 
+create_registry_secret(){
+  kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev
+}
+
 validate_providers() {
   for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-gke}}; do
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
