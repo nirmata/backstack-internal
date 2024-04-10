@@ -8,7 +8,6 @@ CLUSTER_NAME=backstack-hub
 
 do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
-  cat $1-envsub
 }
 
 validate_providers() {
