@@ -43,9 +43,10 @@ kind: ProviderConfig
 metadata:
   name: default
 spec:
+  projectID: ${GCP_CREDENTIALS_PROJECT} # patched
   credentials:
     source: Secret
     secretRef:
-      namespace: crossplane-system
       name: gcp-secret
       key: credentials
+      namespace: crossplane-system
