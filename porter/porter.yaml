@@ -240,6 +240,7 @@ install:
       command: ./helpers.sh
       arguments:
         - ensure_kubernetes
+
   # Kyverno
   - helm3:
       description: "Install Kyverno"
@@ -267,6 +268,7 @@ install:
         - ./manifests/vault/kyverno-policy-exception.yaml
         - ./manifests/ingress-nginx/kyverno-policy-exception.yaml
         - ./manifests/crossplane/kyverno-policy-exception.yaml
+
   # cert-manager
   - helm3:
       description: "Install cert-manager"
@@ -282,6 +284,7 @@ install:
       wait: true
       manifests:
         - ./manifests/cert-manager/cert-manager-cluster-issuer.yaml
+
   # ingress-nginx
   - helm3:
       description: "Install ingress-nginx"
@@ -298,6 +301,7 @@ install:
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
+
   # Crossplane
   - helm3:
       description: "Install Crossplane"
@@ -308,6 +312,7 @@ install:
       wait: true
       set:
         args: "{--enable-external-secret-stores}"
+
   # Vault
   - helm3:
       description: "Install Vault"
@@ -327,6 +332,7 @@ install:
       wait: true
       manifests:
         - ./manifests/vault/vault-ess-configmap.yaml
+
   # Crossplane: ESS Vault, Providers, ProviderConfigs
   - helm3:
       description: "Install Crossplane Vault ESS plugin"
@@ -379,6 +385,7 @@ install:
       command: ./helpers.sh
       arguments:
         - deploy_secrets
+
   # Backstage
   - helm3:
       description: "Install Backstage"
@@ -406,6 +413,7 @@ install:
       wait: true
       manifests:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
+
   # ArgoCD
   - helm3:
       description: "Install ArgoCD"
@@ -445,6 +453,7 @@ install:
       wait: true
       manifests:
         - ./manifests/argocd/argocd-appset-kyverno-pss.yaml
+
   # TODO: step argo-kyverno-custom-policies
   # TODO: step kyverno-custom-policies
 
