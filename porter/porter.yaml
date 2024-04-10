@@ -455,8 +455,10 @@ install:
       atomic: true
       wait: true
       set:
-        server.ingress.hosts[0]: ${bundle.parameters.argocd-host}
-        server.ingressGrpc.hosts[0]: ${bundle.parameters.argocd-host}
+        server.ingress.hostname: ${bundle.parameters.argocd-host}
+        server.ingress.tls: true
+        server.ingressGrpc.hostname: ${bundle.parameters.argocd-host}
+        server.ingressGrpc.tls: true
         configs.cm.url: https://${bundle.parameters.argocd-host}
       values:
         - ./manifests/argocd/argocd-values.yaml
