@@ -447,6 +447,12 @@ install:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
 
   # ArgoCD
+  - exec:
+      description: "Template ArgoCD dex.cfg"
+      command: ./helpers.sh
+      arguments:
+        - do_envsubst_on_file
+        - ./manifests/argocd/argocd-values.yaml
   - helm3:
       description: "Install ArgoCD"
       name: argocd
@@ -461,7 +467,7 @@ install:
         server.ingressGrpc.tls: true
         configs.cm.url: https://${bundle.parameters.argocd-host}
       values:
-        - ./manifests/argocd/argocd-values.yaml
+        - ./manifests/argocd/argocd-values.yaml-envsub
   - exec:
       description: "Template ArgoCD App-of-Apps"
       command: ./helpers.sh
