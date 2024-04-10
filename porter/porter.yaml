@@ -47,7 +47,7 @@ credentials:
   - name: gcp-credentials-project
     required: false
     description: Google Project ID
-    env: ${GCP_CREDENTIALS_PROJECT}
+    env: GCP_CREDENTIALS_PROJECT
     applyTo:
       - install
   - name: kubeconfig
@@ -61,25 +61,25 @@ credentials:
   - name: backstage-google-auth-client-id
     required: false
     description: Google Auth IDP client id for SSO auth in Backstage
-    env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+    env: BACKSTAGE_GOOGLE_AUTH_CLIENT_ID
     applyTo:
       - install
   - name: backstage-google-auth-client-secret
     required: false
     description: Google Auth IDP secret for SSO auth in Backstage
-    env: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+    env: BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET
     applyTo:
       - install
   - name: argocd-google-auth-client-id
     required: false
     description: Google Auth IDP client id for SSO auth in ArgoCD
-    env: ${ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+    env: ARGOCD_GOOGLE_AUTH_CLIENT_ID
     applyTo:
       - install
   - name: argocd-google-auth-client-secret
     required: false
     description: Google Auth IDP secret for SSO auth in ArgoCD
-    env: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
+    env: ARGOCD_GOOGLE_AUTH_CLIENT_SECRET
     applyTo:
       - install
   # Since these annotations can contain potentially sensitive information such as
