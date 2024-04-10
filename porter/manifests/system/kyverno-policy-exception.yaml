@@ -42,3 +42,4 @@ spec:
         - kube-proxy*
         - kindnet*
         - local-path*
+        - coredns*
