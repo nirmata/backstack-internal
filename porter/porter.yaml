@@ -369,13 +369,13 @@ install:
   - kubernetes:
       description: "Configure Crossplane ProvidersConfig"
       manifests:
-        - ./manifests/crossplane/provider-configs.yaml
+        - ./manifests/crossplane/envsub-provider-configs.yaml
   - kubernetes:
       description: "Install Crossplane BACK Stack CRD image"
       manifests:
         - ./manifests/crossplane/backstack.yaml
   - exec:
-      description: "Create Cloud Credential Secrets"
+      description: "Create Crossplane Cloud Credential Secrets"
       command: ./helpers.sh
       arguments:
         - deploy_secrets
