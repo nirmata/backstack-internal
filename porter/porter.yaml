@@ -136,6 +136,10 @@ parameters:
   - name: repository
     env: REPOSITORY
     type: string
+    default: https://github.com/nirmata/backstack-internal
+  - name: request-repository
+    env: REQUEST_REPOSITORY
+    type: string
     default: https://github.com/nirmata/backstack-internal-requests
   - name: github-token-user
     env: GITHUB_TOKEN_USER
