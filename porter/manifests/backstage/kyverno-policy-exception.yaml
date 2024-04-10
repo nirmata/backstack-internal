@@ -27,6 +27,7 @@ spec:
         kinds:
         - Pod
         - Deployment
+        - ReplicaSet
         namespaces:
         - backstage
         names:

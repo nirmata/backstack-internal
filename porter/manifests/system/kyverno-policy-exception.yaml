@@ -17,6 +17,10 @@ spec:
     ruleNames:
     - require-drop-all
     - autogen-require-drop-all
+    - adding-capabilities-strict
+    - autogen-adding-capabilities-strict
+    - adding-capabilities
+    - autogen-adding-capabilities
   - policyName: require-run-as-nonroot
     ruleNames:
     - run-as-non-root
@@ -29,6 +33,10 @@ spec:
     ruleNames:
     - restricted-volumes
     - autogen-restricted-volumes
+  - policyName: disallow-host-namespaces
+    ruleNames:
+    - host-namespaces
+    - autogen-host-namespaces
   match:
     any:
     - resources:
@@ -43,9 +51,8 @@ spec:
         - local-path-storage
         names:
         # TODO: this should be more targeted than blanket *
-        - kube-proxy*
+        - kube-*
         - kindnet*
         - local-path*
         - coredns*
-        - kube-scheduler*
-        - kube-controller*
+        - etcd-*
