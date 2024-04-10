@@ -322,8 +322,8 @@ install:
       atomic: true
       wait: true
       set:
-        server.ingress.hosts[0].host: "${bundle.parameters.vault-host}"
-        server.ingress.tls[0].hosts[0]: "${bundle.parameters.vault-host}"
+        server.ingress.hosts[0].host: ${bundle.parameters.vault-host}
+        server.ingress.tls[0].hosts[0]: ${bundle.parameters.vault-host}
         server.ingress.tls[0].secretName: vault-tls
       values:
         - ./manifests/vault/vault-values.yaml
@@ -395,10 +395,10 @@ install:
       atomic: true
       wait: true
       set:
-        ingress.host: "${bundle.parameters.backstage-host}"
-        backstage.image.registry: "${bundle.parameters.registry}"
-        backstage.image.repository: "${bundle.parameters.backstage-image}"
-        backstage.image.tag: "${bundle.parameters.backstage-image-tag}"
+        ingress.host: ${bundle.parameters.backstage-host}
+        backstage.image.registry: ${bundle.parameters.registry}
+        backstage.image.repository: ${bundle.parameters.backstage-image}
+        backstage.image.tag: ${bundle.parameters.backstage-image-tag}
       values:
         - ./manifests/backstage/backstage-values.yaml
   - exec:
@@ -432,9 +432,9 @@ install:
       atomic: true
       wait: true
       set:
-        server.ingress.hosts[0]: "${bundle.parameters.argocd-host}"
-        server.ingressGrpc.hosts[0]: "${bundle.parameters.argocd-host}"
-        configs.cm.url: "https://${bundle.parameters.argocd-host}"
+        server.ingress.hosts[0]: ${bundle.parameters.argocd-host}
+        server.ingressGrpc.hosts[0]: ${bundle.parameters.argocd-host}
+        configs.cm.url: https://${bundle.parameters.argocd-host}
       values:
         - ./manifests/argocd/argocd-values.yaml
   - exec:
