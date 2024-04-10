@@ -311,11 +311,7 @@ install:
       wait: true
       manifests:
         - ./manifests/vault/vault-ess-configmap.yaml
-  - kubernetes:
-      description: "Create Vault Crossplane VaultConfig"
-      wait: true
-      manifests:
-        - ./manifests/vault/vault-crossplane-vault.yaml
+
   - helm3:
       description: "Install Crossplane Vault ESS plugin"
       name: ess-plugin-vault
@@ -325,7 +321,11 @@ install:
       wait: true
       values:
         - ./manifests/vault/vault-ess-plugin-values.yaml
-
+  - kubernetes:
+      description: "Create Vault Crossplane VaultConfig"
+      wait: true
+      manifests:
+        - ./manifests/vault/vault-crossplane-vault.yaml
   - kubernetes:
       description: "Create Crossplane StoreConfig"
       wait: true
