@@ -402,6 +402,7 @@ install:
       manifests:
         - ./manifests/crossplane/backstack.yaml-envsub
   - exec:
+      # TODO: this currently deploys more than just crossplane secrets. modify function to take a name
       description: "Create Crossplane Cloud Credential Secrets"
       command: ./helpers.sh
       arguments:

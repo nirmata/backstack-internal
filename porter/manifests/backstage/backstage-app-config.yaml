@@ -57,6 +57,7 @@ data:
     integrations:
       github:
       - host: github.com
+        # TODO: figure out how to supply this out of the backstage secret instead of envsubs
         token: ${GITHUB_TOKEN}
     kubernetes:
       clusterLocatorMethods:
@@ -78,4 +79,5 @@ data:
       kvVersion: "2"
       publicUrl: https://${VAULT_HOST}
       secretEngine: secret
+      # TODO: figure out how to supply this out of the backstage secret instead of envsubs
       token: ${VAULT_TOKEN}
