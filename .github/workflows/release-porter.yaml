@@ -5,8 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'bundle/**'
-  workflow_dispatch: {}
+      - 'porter/**'
 
 env:
   REGISTRY: ghcr.io
