@@ -38,9 +38,6 @@ data:
       listen:
         port: 7007
     catalog:
-      # import:
-      #   entityFilename: catalog-info.yaml
-      #   pullRequestBranchName: main
       locations:
       - rules:
         - allow:
