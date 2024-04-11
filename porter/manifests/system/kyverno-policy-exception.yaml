@@ -13,12 +13,20 @@ spec:
     ruleNames:
     - privilege-escalation
     - autogen-privilege-escalation
+  - policyName: disallow-privileged-containers
+    ruleNames:
+    - privileged-containers
+    - autogen-privileged-containers
   - policyName: disallow-capabilities-strict
     ruleNames:
     - require-drop-all
     - autogen-require-drop-all
     - adding-capabilities-strict
     - autogen-adding-capabilities-strict
+    - adding-capabilities
+    - autogen-adding-capabilities
+  - policyName: disallow-capabilities
+    ruleNames:
     - adding-capabilities
     - autogen-adding-capabilities
   - policyName: require-run-as-nonroot
