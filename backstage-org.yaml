@@ -12,7 +12,7 @@ metadata:
 spec:
   type: organization
   profile:
-    displayName: ACME Corp
+    displayName: BACK Stack ACME Corp
     email: info@example.com
     picture: https://api.dicebear.com/7.x/identicon/svg?seed=Maggie&flip=true&backgroundColor=ffdfbf
   children: [infrastructure]

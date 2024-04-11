@@ -40,7 +40,7 @@ data:
     catalog:
       import:
         entityFilename: catalog-info.yaml
-        pullRequestBranchName: backstage-integration
+        pullRequestBranchName: main
       locations:
       - rules:
         - allow:
