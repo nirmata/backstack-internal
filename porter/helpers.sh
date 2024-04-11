@@ -4,8 +4,7 @@ set -euo pipefail
 K8S_CFG_INTERNAL=/home/nonroot/.kube/config
 # This is internal to the container, it does not relate to local system paths
 K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
-# TODO: move this to a parameter
-CLUSTER_NAME=backstack-hub-$(head /dev/urandom | tr -dc a-z0-9 | head -c7)
+CLUSTER_NAME=${KIND_CLUSTER_NAME}
 
 do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
