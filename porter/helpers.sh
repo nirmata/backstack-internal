@@ -55,6 +55,9 @@ EOF
     stringData:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       VAULT_TOKEN: ${VAULT_TOKEN}
+      VAULT_HOST: ${VAULT_HOST}
+      REPOSITORY: ${REPOSITORY}
+      BACKSTAGE_HOST: ${BACKSTAGE_HOST}
 EOF
 
   ensure_namespace crossplane-system

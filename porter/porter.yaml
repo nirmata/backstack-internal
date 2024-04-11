@@ -431,17 +431,11 @@ install:
         backstage.image.pullSecrets[0]: registry-credentials
       values:
         - ./manifests/backstage/backstage-values.yaml
-  - exec:
-      description: "Template Backstage app-config.yaml ConfigMap"
-      command: ./helpers.sh
-      arguments:
-        - do_envsubst_on_file
-        - ./manifests/backstage/backstage-app-config.yaml
   - kubernetes:
       description: "Create Backstage app-config.yaml ConfigMap"
       wait: true
       manifests:
-        - ./manifests/backstage/backstage-app-config.yaml-envsub
+        - ./manifests/backstage/backstage-app-config.yaml
   - kubernetes:
       description: "Create Backstage ClusterRole"
       wait: true
