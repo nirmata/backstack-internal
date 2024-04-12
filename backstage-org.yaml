@@ -24,3 +24,4 @@ spec:
   type: department
   # Intentional no profile for testing
   parent: backstack-acme-corp
+  children: []
