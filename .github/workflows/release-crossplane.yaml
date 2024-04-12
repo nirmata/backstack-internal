@@ -32,7 +32,7 @@ jobs:
         id: tag
 
       - name: Log into ${{ env.REGISTRY }}
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -45,9 +45,9 @@ jobs:
 
       - name: Build Configuration Package
         run: |
-          crossplane xpkg build --package-root=crossplane/ -o crossplane/back-stack.xpkg
+          crossplane xpkg build --package-root=crossplane/ -o crossplane/backstack.xpkg
 
       - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:latest
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane:latest

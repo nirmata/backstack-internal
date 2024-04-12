@@ -89,7 +89,7 @@ export class CrossplaneProvider implements EntityProvider {
         },
         spec: {
             type: "kubernetes-cluster",
-            system: "back-stack",
+            system: "backstack",
             owner: "infrastructure"
         }
     }));

@@ -1,0 +1,25 @@
+server:
+  dev:
+    enabled: true
+  ui:
+    enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+  volumes:
+  - name: crossplane-ess-plugin
+    configMap:
+      name: crossplane-ess-plugin
+      items:
+      - key: run.sh
+        path: run.sh
+        mode: 511
+  volumeMounts:
+  - name: crossplane-ess-plugin
+    mountPath: /vault/userconfig/crossplane-ess-plugin
+  postStart:
+  - /bin/sh
+  - -c
+  - /vault/userconfig/crossplane-ess-plugin/run.sh

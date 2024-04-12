@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstack-app-config
+  namespace: backstage
+data:
+  app-config.extra.yaml: |
+    app:
+      baseUrl: https://${BACKSTAGE_HOST}
+      title: BACK Stack IDP
+    auth: {}
+      # environment: prod
+      # providers:
+      #   google:
+      #     prod:
+      #       clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+      #       clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+    backend:
+      baseUrl: https://${BACKSTAGE_HOST}
+      cors:
+        credentials: true
+        methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+        origin: http://localhost:3000
+      csp:
+        connect-src:
+        - '''self'''
+        - 'http:'
+        - 'https:'
+      database:
+        client: better-sqlite3
+        connection: ':memory:'
+      listen:
+        port: 7007
+    catalog:
+      locations:
+      - rules:
+        - allow: [Group, User]
+        target: ${REPOSITORY}/blob/main/backstage-org.yaml
+        type: url
+      - rules:
+        - allow: [Component, API, Resource, Template, System]
+        target: ${REPOSITORY}/blob/main/backstage-catalog-info.yaml
+        type: url
+    integrations:
+      github:
+      - host: github.com
+        # TODO: figure out how to supply this out of the backstage secret instead of envsubs
+        token: ${GITHUB_TOKEN}
+    kubernetes:
+      clusterLocatorMethods:
+      - type: catalog
+      serviceLocatorMethod:
+        type: multiTenant
+    organization:
+      name: BACK Stack
+    proxy: null
+    scaffolder: null
+    techdocs:
+      builder: local
+      generator:
+        runIn: docker
+      publisher:
+        type: local
+    vault:
+      baseUrl: http://vault.vault.svc:8200
+      kvVersion: "2"
+      publicUrl: https://${VAULT_HOST}
+      secretEngine: secret
+      # TODO: figure out how to supply this out of the backstage secret instead of envsubs
+      token: ${VAULT_TOKEN}

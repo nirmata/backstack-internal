@@ -1,0 +1,21 @@
+ingress:
+  enabled: true
+  # TODO: make the below configurable
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+  # TODO: make the below configurable
+  tls:
+    enabled: true
+    secretName: backstage-tls
+backstage:
+  image:
+    registry: ${REGISTRY}
+    repository: ${BACKSTAGE_IMAGE} #needs to be patched in
+    tag: ${BACKSTAGE_IMAGE_TAG}
+    pullPolicy: Always
+  extraEnvVarsSecrets:
+    - backstage
+  extraAppConfig:
+    - filename: app-config.extra.yaml
+      configMapRef: backstack-app-config

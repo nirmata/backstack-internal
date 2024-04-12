@@ -39,20 +39,21 @@ import { googleAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
 
 const app = createApp({
-  components: {
-    SignInPage: props => (
-      <SignInPage
-        {...props}
-        auto
-        provider={{
-          id: 'google',
-          title: 'Google',
-          message: 'Sign in using Google',
-          apiRef: googleAuthApiRef,
-        }}
-      />
-    ),
-  },
+  // # TODO: need to figure out how to build this in properly
+  // components: {
+  //   SignInPage: props => (
+  //     <SignInPage
+  //       {...props}
+  //       auto
+  //       provider={{
+  //         id: 'google',
+  //         title: 'Google',
+  //         message: 'Sign in using Google',
+  //         apiRef: googleAuthApiRef,
+  //       }}
+  //     />
+  //   ),
+  // },
   apis,
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {

@@ -1,0 +1,32 @@
+configs:
+  params:
+    server.insecure: true
+  cm:
+    dex.config: |
+      connectors:
+      - config:
+          issuer: https://accounts.google.com
+          clientID: ${ARGOCD_GOOGLE_AUTH_CLIENT_ID}
+          clientSecret: ${ARGOCD_GOOGLE_AUTH_CLIENT_SECRET}
+        type: oidc
+        id: google
+        name: Google
+    exec.enabled: "false"
+    server.rbac.log.enforce.enable: "false"
+    application.resourceTrackingMethod: annotation+label
+    application.instanceLabelKey: argocd.backstack.dev/resource
+server:
+  deploymentAnnotations:
+    backstage.io/kubernetes-id: argocd-service
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+  ingressGrpc:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer

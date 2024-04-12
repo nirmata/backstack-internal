@@ -32,6 +32,7 @@ spec:
           title: Version
           type: string
           description: Kubernetes version of the Cluster
+          # TODO: need to figure out a good way to keep these in sync or not require them alltogether
           default: "1.28"
           enum:
             - "1.29"
@@ -75,7 +76,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: demo/clusters
+        targetPath: cluster-requests
         values:
           cluster_id: spoke-${{ parameters.cluster_id }}
           region: ${{ parameters.region }}
@@ -83,6 +84,7 @@ spec:
           iam_role_arn: ${{ parameters.iam_role_arn }}
           nodes_count: ${{ parameters.nodes_count }}
           nodes_instance_type: ${{ parameters.nodes_instance_type }}
+          kyverno_custom_repository: ${{ parameters.custom_kyverno_policies }}
     - id: publish
       name: Publish
       action: publish:github:pull-request
@@ -90,10 +92,11 @@ spec:
         allowedHosts: ['github.com']
         title: Request for new cluster
         description: |
-          Cluster ID: spoke-${{ parameters.cluster_id }}
-          Region:     ${{ parameters.region }}
-          Version:    ${{ parameters.version }}
-          Nodes:      ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
+          Cluster ID:       spoke-${{ parameters.cluster_id }}
+          Region:           ${{ parameters.region }}
+          Version:          ${{ parameters.version }}
+          Nodes:            ${{ parameters.nodes_instance_type }} (${{ parameters.nodes_count }})
+          Custom Policies:  ${{ parameters.custom_kyverno_policies }}
         repoUrl: ${{ parameters.repo_url }}
         branchName: ${{ parameters.pull_request_branch_name }}
   output:
