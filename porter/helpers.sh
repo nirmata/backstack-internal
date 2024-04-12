@@ -28,6 +28,8 @@ validate_back_stack_configuration() {
 }
 
 deploy_secrets() {
+  # TODO: This function needs to be re-wroked and allow for passing in what we want to create
+  # or just move all of this to a kubernetes manifest mixin
   ensure_namespace argocd
   kubectl apply -f - <<-EOF
     apiVersion: v1
@@ -39,7 +41,7 @@ deploy_secrets() {
         argocd.argoproj.io/secret-type: repository
     stringData:
       type: git
-      url: ${REPOSITORY}
+      url: ${REQUEST_REPOSITORY}
       password: ${GITHUB_TOKEN}
       username: ${GITHUB_TOKEN_USER}
 EOF
@@ -77,7 +79,17 @@ EOF
       name: aws-secret
       namespace: crossplane-system
     data:
-      credentials: $(echo -n "$AWS_CREDENTIALS" | base64 -w 0)
+      credentials: $(echo -n "${AWS_CREDENTIALS}" | base64 -w 0)
+EOF
+
+  kubectl apply -f - <<-EOF
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: gcp-secret
+      namespace: crossplane-system
+    data:
+      credentials: $(echo -n "${GCP_CREDENTIALS}" | base64 -w 0)
 EOF
 }
 
@@ -93,7 +105,7 @@ ensure_kubernetes() {
       kind export kubeconfig --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
     else
       echo Create KinD Cluster
-      kind create cluster --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL} --config=/cnab/app/kind.cluster.config --wait=40s
+      kind create cluster --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL} --config=./kind.cluster.config --wait=40s
       kind export kubeconfig --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
     fi
     docker network connect kind ${HOSTNAME}
