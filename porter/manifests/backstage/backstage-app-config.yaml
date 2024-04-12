@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backstage-app-config
+  name: backstage-backstack-app-config
   namespace: backstage
 data:
-  app-config.yaml: |
+  app-config.extra.yaml.yaml: |
     app:
       baseUrl: https://${BACKSTAGE_HOST}
       title: BACK Stack IDP
