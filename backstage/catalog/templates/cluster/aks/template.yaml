@@ -76,6 +76,7 @@ spec:
         url: ./skeleton
         targetPath: cluster-requests
         values:
+          # TODO: document that we will auto add spoke to the name of the cluster
           cluster_id: spoke-${{ parameters.cluster_id }}
           region: ${{ parameters.region }}
           version: ${{ parameters.version }}
