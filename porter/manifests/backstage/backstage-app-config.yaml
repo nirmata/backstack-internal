@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backstage-backstack-app-config
+  name: backstack-app-config
   namespace: backstage
 data:
   app-config.extra.yaml: |

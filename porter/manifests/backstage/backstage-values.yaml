@@ -18,4 +18,4 @@ backstage:
     - backstage
   extraAppConfig:
     - filename: app-config.extra.yaml
-      configMapRef: backstage-backstack-app-config
+      configMapRef: backstack-app-config
