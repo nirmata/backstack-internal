@@ -8,13 +8,13 @@ data:
     app:
       baseUrl: https://${BACKSTAGE_HOST}
       title: BACK Stack IDP
-    auth:
-      environment: prod
-      providers:
-        google:
-          prod:
-            clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
-            clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+    auth: {}
+      # environment: prod
+      # providers:
+      #   google:
+      #     prod:
+      #       clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
+      #       clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
     backend:
       baseUrl: https://${BACKSTAGE_HOST}
       cors:
