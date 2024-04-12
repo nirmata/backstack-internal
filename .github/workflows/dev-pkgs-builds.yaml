@@ -38,7 +38,7 @@ jobs:
         id: tag
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -81,7 +81,7 @@ jobs:
         id: tag
 
       - name: Log into ${{ env.REGISTRY }}
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -94,12 +94,12 @@ jobs:
 
       - name: Build Configuration Package
         run: |
-          crossplane xpkg build --package-root=crossplane/ -o crossplane/back-stack.xpkg
+          crossplane xpkg build --package-root=crossplane/ -o crossplane/backstack.xpkg
 
       - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:latest
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:latest
 
   backstage:
     runs-on: ubuntu-latest
@@ -119,31 +119,31 @@ jobs:
         id: tag
 
       - name: Set Node.js 18.x
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run yarn install
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           dir: backstage
           cmd: install
 
       - name: Build backend bundle
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           dir: backstage
           cmd: build:backend
 
       - name: Build the image
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           dir: backstage
           cmd: build-image --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:latest
