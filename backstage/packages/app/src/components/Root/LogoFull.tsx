@@ -13,6 +13,7 @@ const useStyles = makeStyles({
 const LogoFull = () => {
   const classes = useStyles();
 
+  // TODO: drop an SVG icon in here with BACK Stack
   return (
     <svg
       className={classes.svg}
