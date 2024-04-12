@@ -94,12 +94,12 @@ jobs:
 
       - name: Build Configuration Package
         run: |
-          crossplane xpkg build --package-root=crossplane/ -o crossplane/back-stack.xpkg
+          crossplane xpkg build --package-root=crossplane/ -o crossplane/backstack.xpkg
 
       - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
-          crossplane xpkg push -f crossplane/back-stack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:latest
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
+          crossplane xpkg push -f crossplane/backstack.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-crossplane-unstable:latest
 
   backstage:
     runs-on: ubuntu-latest
