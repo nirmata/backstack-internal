@@ -1,0 +1,44 @@
+schemaType: ParameterSet
+schemaVersion: 1.0.1
+namespace: default
+name: NAME_OF_YOUR_PARAMETERS
+parameters:
+  # REQUIRED PARAMETERS
+  - name: registry
+    source:
+      value: ghcr.io
+  - name: repository
+    source:
+      value: https://github.com/nirmata/backstack-internal
+  - name: request-repository
+    source:
+      value: https://github.com/nirmata/backstack-internal-requests
+
+
+  # NOT REQUIRED CREDENTIALS
+  # You can remove all of these from the file
+  # prior to applying
+  - name: cluster-type
+    source:
+      value: kind
+  - name: argocd-host
+    source:
+      value: argocd-7f000001.nip.io
+  - name: backstage-host
+    source:
+      value: backstage-7f000001.nip.io
+  - name: vault-host
+    source:
+      value: vault-7f000001.nip.io
+  - name: backstage-image-repository
+    source:
+      value: nirmata/backstack-internal-backstage
+  - name: backstage-image-tag
+    source:
+      value: latest
+  - name: crossplane-image-repository
+    source:
+      value: nirmata/backstack-internal-crossplane
+  - name: crossplane-image-tag
+    source:
+      value: latest
