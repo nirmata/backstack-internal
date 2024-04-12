@@ -1,4 +1,3 @@
-# Kind - https://kind.sigs.k8s.io/docs/user/ingress/
 controller:
   updateStrategy:
     type: RollingUpdate

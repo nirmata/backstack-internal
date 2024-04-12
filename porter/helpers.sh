@@ -61,6 +61,7 @@ EOF
       BACKSTAGE_HOST: ${BACKSTAGE_HOST}
 EOF
 
+  # TODO: this currently is not working, it is passing in the path and it needs to create the file from the path
   ensure_namespace crossplane-system
   kubectl apply -f - <<-EOF
     apiVersion: v1
