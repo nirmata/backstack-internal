@@ -1,18 +1,17 @@
+# TODO: need to figure out if these should live in main repo/request repo/or be configurable
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: backstack-acme-corp
   description: The backstack-acme-corp organization
   links:
-    - url: http://www.acme.com/
+    - url: https://backstack.dev/
       title: Website
-    - url: https://meta.wikimedia.org/wiki/
-      title: Intranet
 spec:
   type: organization
   profile:
-    displayName: ACME Corp
-    email: info@example.com
+    displayName: BACK Stack ACME Corp
+    email: noop@backstack.dev
     picture: https://api.dicebear.com/7.x/identicon/svg?seed=Maggie&flip=true&backgroundColor=ffdfbf
   children: [infrastructure]
 ---
