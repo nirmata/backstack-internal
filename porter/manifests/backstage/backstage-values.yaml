@@ -15,7 +15,7 @@ backstage:
     tag: ${BACKSTAGE_IMAGE_TAG}
     pullPolicy: Always
   extraEnvVarsSecrets:
-  - backstage
+    - backstage
   extraAppConfig:
     - filename: app-config.extra.yaml
       configMapRef: backstage-backstack-app-config
