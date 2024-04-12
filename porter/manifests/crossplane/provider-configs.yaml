@@ -43,7 +43,7 @@ kind: ProviderConfig
 metadata:
   name: default
 spec:
-  projectID: ${GCP_CREDENTIALS_PROJECT} # patched
+  projectID: ${GCP_CREDENTIALS_PROJECT}
   credentials:
     source: Secret
     secretRef:

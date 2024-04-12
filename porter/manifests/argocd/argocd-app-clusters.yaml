@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ${REQUEST_REPOSITORY} # patched
+    repoURL: ${REQUEST_REPOSITORY}
     path: cluster-requests
     targetRevision: HEAD
   destination:
