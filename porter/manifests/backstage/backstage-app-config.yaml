@@ -4,7 +4,7 @@ metadata:
   name: backstage-backstack-app-config
   namespace: backstage
 data:
-  app-config.extra.yaml.yaml: |
+  app-config.extra.yaml: |
     app:
       baseUrl: https://${BACKSTAGE_HOST}
       title: BACK Stack IDP
