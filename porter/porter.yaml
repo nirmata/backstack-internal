@@ -520,6 +520,11 @@ install:
       wait: true
       manifests:
         - ./manifests/argocd/argocd-appset-kyverno-pss.yaml
+  - kubernetes:
+      description: "Create ArgoCD Kyverno CLuster Secret Generating Policy"
+      wait: true
+      manifests:
+        - ./manifests/kyverno/kyverno-kubeconfig-gen-policy.yaml
 
   # TODO: step argo-kyverno-custom-policies
   # TODO: step kyverno-custom-policies
