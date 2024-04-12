@@ -189,6 +189,7 @@ parameters:
     env: BACKSTAGE_USE_GOOGLE_AUTH
     type: string
     default: no_backstage_auth
+  # TODO: add a backstage file parameter allowing folks to pass in a their own app-config.yaml
   - name: deploy-ingress-controller
     env: DEPLOY_INGRESS_CONTROLLER
     type: string
