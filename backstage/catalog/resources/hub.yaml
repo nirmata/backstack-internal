@@ -2,6 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   name: hub
+  description: The BACK Stack HUB cluster, used to provision & control other resources
   annotations:
     kubernetes.io/api-server: https://kubernetes.default.svc
     kubernetes.io/api-server-certificate-authority: ''
