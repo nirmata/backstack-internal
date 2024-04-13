@@ -8,6 +8,19 @@ data:
     app:
       baseUrl: https://${BACKSTAGE_HOST}
       title: BACK Stack IDP
+      support:
+        url: https://github.com/back-stack/showcase/issues # Used by common ErrorPage
+        items: # Used by common SupportButton component
+          - title: Issues
+            icon: github
+            links:
+              - url: https://github.com/back-stack/showcase/issues
+                title: GitHub Issues
+          - title: CNCF Slack Channel
+            icon: chat
+            links:
+              - url: https://cloud-native.slack.com/archives/C066BJRLS4B
+                title: '#backstack'
     auth: {}
       # environment: prod
       # providers:
