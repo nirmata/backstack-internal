@@ -4,16 +4,18 @@ namespace: default
 name: NAME_OF_YOUR_PARAMETERS
 parameters:
   # REQUIRED PARAMETERS
+  # This is the registry we will use when pulling backstage and crossplane packages
   - name: registry
     source:
       value: ghcr.io
+  # This is the repository from where we will pull down our Backstage catalog and templates
   - name: repository
     source:
       value: https://github.com/nirmata/backstack-internal
+  # This is the repository which will house our cluster and application requests
   - name: request-repository
     source:
       value: https://github.com/nirmata/backstack-internal-requests
-
 
   # NOT REQUIRED CREDENTIALS
   # You can remove all of these from the file
