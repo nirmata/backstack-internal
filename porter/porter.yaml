@@ -137,6 +137,7 @@ parameters:
       - baseline
       - restricted
       - privileged
+  # TODO: add logic if this is set to Audit to not install the Policy Exceptions
   - name: kyverno-hub-pss-audit-enforce
     env: KYVERNO_HUB_PSS_AUDIT_ENFORCE
     type: string

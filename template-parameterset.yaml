@@ -20,27 +20,47 @@ parameters:
   # NOT REQUIRED CREDENTIALS
   # You can remove all of these from the file
   # prior to applying
+  # Can be set to: kind, eks, aks, gke or xks (for generic install attempt)
   - name: cluster-type
     source:
       value: kind
+  # If using KinD can overwrite the default cluster-name
+  - name: kind-cluster-name
+    source:
+      value: backstack-hub
+  # Control the PSS level we use: baseline, restricted, privileged
+  - name: kyverno-hub-pss-level
+    source:
+      value: restricted
+  # Control the Audit/Enforce of policies, defaults to Enforce
+  - name: kyverno-hub-pss-audit-enforce
+    source:
+      value: Enforce
+  # DNS FQDN to use for argocd, you need to provision this DNS externally when using anything other than KinD
   - name: argocd-host
     source:
       value: argocd-7f000001.nip.io
+  # DNS FQDN to use for backstage, you need to provision this DNS externally when using anything other than KinD
   - name: backstage-host
     source:
       value: backstage-7f000001.nip.io
+  # DNS FQDN to use for vault, you need to provision this DNS externally when using anything other than KinD
   - name: vault-host
     source:
       value: vault-7f000001.nip.io
+  # We will use the registry from above, but allows controlling the specific image you want to install for backstage
   - name: backstage-image-repository
     source:
       value: nirmata/backstack-internal-backstage
+  # Specific tag to use for the image
   - name: backstage-image-tag
     source:
       value: latest
+  # We will use the registry from above, but allows controlling the specific image you want to install for crossplane CRD pkg
   - name: crossplane-image-repository
     source:
       value: nirmata/backstack-internal-crossplane
+  # Specific tag to use for the image
   - name: crossplane-image-tag
     source:
       value: latest
