@@ -22,12 +22,7 @@ data:
               - url: https://cloud-native.slack.com/archives/C066BJRLS4B
                 title: '#backstack'
     auth: {}
-      # environment: prod
-      # providers:
-      #   google:
-      #     prod:
-      #       clientId: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_ID}
-      #       clientSecret: ${BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET}
+      # TODO: figure out how to best allow for setting these: https://github.com/backstage/backstage/blob/16ef9e59e5c735f13b3468abd52748321fd55937/app-config.yaml#L314
     backend:
       baseUrl: https://${BACKSTAGE_HOST}
       cors:
@@ -57,8 +52,37 @@ data:
     integrations:
       github:
       - host: github.com
-        # TODO: figure out how to supply this out of the backstage secret instead of envsubs
         token: ${GITHUB_TOKEN}
+      ### Example for how to add your GitHub Enterprise instance using the API:
+      # - host: ghe.example.net
+      #   apiBaseUrl: https://ghe.example.net/api/v3
+      #   token: ${GHE_TOKEN}
+      ### Example for how to add your GitHub Enterprise instance using raw HTTP fetches (token is optional):
+      # - host: ghe.example.net
+      #   rawBaseUrl: https://ghe.example.net/raw
+      #   token: ${GHE_TOKEN}
+      # gitlab:
+      #   - host: gitlab.com
+      #     token: ${GITLAB_TOKEN}
+      ### Example for how to add a bitbucket cloud integration
+      # bitbucketCloud:
+      #   - username: ${BITBUCKET_USERNAME}
+      #     appPassword: ${BITBUCKET_APP_PASSWORD}
+      ### Example for how to add your bitbucket server instance using the API:
+      # - host: server.bitbucket.com
+      #   apiBaseUrl: server.bitbucket.com
+      #   username: ${BITBUCKET_SERVER_USERNAME}
+      #   appPassword: ${BITBUCKET_SERVER_APP_PASSWORD}
+      # azure:
+      #   - host: dev.azure.com
+      #     token: ${AZURE_TOKEN}
+      #  googleGcs:
+      #    clientEmail: 'example@example.com'
+      #    privateKey: ${GCS_PRIVATE_KEY}
+      # awsS3:
+      #   - endpoint: ${AWS_S3_ENDPOINT}
+      #     accessKeyId: ${AWS_ACCESS_KEY_ID}
+      #     secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
     kubernetes:
       clusterLocatorMethods:
       - type: catalog
@@ -79,5 +103,4 @@ data:
       kvVersion: "2"
       publicUrl: https://${VAULT_HOST}
       secretEngine: secret
-      # TODO: figure out how to supply this out of the backstage secret instead of envsubs
       token: ${VAULT_TOKEN}
