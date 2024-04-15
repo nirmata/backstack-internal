@@ -11,4 +11,4 @@ spec:
     targetRevision: HEAD
   destination:
     name: hub
-    namespace: default # TODO: needs to be configurable
+    namespace: default # TODO: https://github.com/nirmata/backstack-internal/issues/30 needs to be configurable

@@ -28,7 +28,7 @@ validate_back_stack_configuration() {
 }
 
 deploy_secrets() {
-  # TODO: This function needs to be re-wroked and allow for passing in what we want to create
+  # TODO: https://github.com/nirmata/backstack-internal/issues/35 This function needs to be re-wroked and allow for passing in what we want to create
   # or just move all of this to a kubernetes manifest mixin
   ensure_namespace argocd
   kubectl apply -f - <<-EOF
@@ -61,7 +61,7 @@ EOF
       BACKSTAGE_HOST: ${BACKSTAGE_HOST}
 EOF
 
-  # TODO: this currently is not working, it is passing in the path and it needs to create the file from the path
+  # TODO: https://github.com/nirmata/backstack-internal/issues/36 this currently is not working, it is passing in the path and it needs to create the file from the path
   ensure_namespace crossplane-system
   kubectl apply -f - <<-EOF
     apiVersion: v1
@@ -112,7 +112,7 @@ ensure_kubernetes() {
     docker network connect kind ${HOSTNAME}
     KIND_DIND_IP=$(docker inspect -f "{{ .NetworkSettings.Networks.kind.IPAddress }}" ${CLUSTER_NAME}-control-plane)
     sed -i -e "s@server: .*@server: https://${KIND_DIND_IP}:6443@" ${K8S_CFG_INTERNAL}
-  # TODO: look at utilizing the aws mixin instead of doing all of this
+  # TODO: https://github.com/nirmata/backstack-internal/issues/37 look at utilizing the aws mixin instead of doing all of this
   # TODO: if the above works, remove the awscli from the dockerfile tempalte
   elif [ "$CLUSTER_TYPE" = "eks" ]; then
     # there is no difference between internal and external

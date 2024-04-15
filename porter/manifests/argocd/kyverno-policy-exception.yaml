@@ -30,5 +30,5 @@
 #         namespaces:
 #         - backstage
 #         names:
-#         # TODO: this should be more targeted than blanket *
+#         # TODO: https://github.com/nirmata/backstack-internal/issues/54 this should be more targeted than blanket *
 #         - argocd-*

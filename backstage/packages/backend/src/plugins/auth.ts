@@ -50,7 +50,7 @@ export default async function createPlugin(
           // resolver: providers.github.resolvers.usernameMatchingUserEntityName(),
         },
       }),
-      // # TODO: need to figure out how to build this in properly
+      // # TODO: https://github.com/nirmata/backstack-internal/issues/28 need to figure out how to build this in properly
       // google: providers.google.create({
       //   signIn: {
       //     resolver: async ({ profile }, ctx) => {

@@ -58,7 +58,7 @@ spec:
         - kube-system
         - local-path-storage
         names:
-        # TODO: this should be more targeted than blanket *
+        # TODO: https://github.com/nirmata/backstack-internal/issues/54 this should be more targeted than blanket *
         - kube-*
         - kindnet*
         - local-path*

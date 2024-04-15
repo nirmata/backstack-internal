@@ -32,7 +32,7 @@ spec:
           title: Version
           type: string
           description: Kubernetes version of the Cluster
-          # TODO: need to figure out a good way to keep these in sync or not require them alltogether
+          # TODO: https://github.com/nirmata/backstack-internal/issues/25 need to figure out a good way to keep these in sync or not require them alltogether
           default: "1.28"
           enum:
             - "1.29"

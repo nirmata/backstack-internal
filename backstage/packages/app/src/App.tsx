@@ -39,7 +39,7 @@ import { googleAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
 
 const app = createApp({
-  // # TODO: need to figure out how to build this in properly
+  // # TODO: https://github.com/nirmata/backstack-internal/issues/27 need to figure out how to build this in properly
   // components: {
   //   SignInPage: props => (
   //     <SignInPage

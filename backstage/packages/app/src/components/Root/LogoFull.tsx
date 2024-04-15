@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 const LogoFull = () => {
   const classes = useStyles();
 
-  // TODO: drop an SVG icon in here with BACK Stack
+  // TODO: https://github.com/nirmata/backstack-internal/issues/26 drop an SVG icon in here with BACK Stack
   return (
     <svg
       className={classes.svg}

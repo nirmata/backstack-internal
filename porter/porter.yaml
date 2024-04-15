@@ -70,7 +70,7 @@ credentials:
     env: BACKSTAGE_GOOGLE_AUTH_CLIENT_SECRET
     applyTo:
       - install
-  # TODO: get this wired into the install process
+  # TODO: https://github.com/nirmata/backstack-internal/issues/39 get this wired into the install process
   - name: backstage-custom-app-config
     required: false
     env: BACKSTAGE_CUSTOM_APP_CONFIG
@@ -137,7 +137,7 @@ parameters:
       - baseline
       - restricted
       - privileged
-  # TODO: add logic if this is set to Audit to not install the Policy Exceptions
+  # TODO: https://github.com/nirmata/backstack-internal/issues/40 add logic if this is set to Audit to not install the Policy Exceptions
   - name: kyverno-hub-pss-audit-enforce
     env: KYVERNO_HUB_PSS_AUDIT_ENFORCE
     type: string
@@ -229,7 +229,7 @@ mixins:
   - exec
   - docker
   - helm3:
-      clientVersion: v3.14.3 # TODO: need this to be macro
+      clientVersion: v3.14.3 # TODO: https://github.com/nirmata/backstack-internal/issues/41 need this to be macro
       repositories:
         crossplane-stable:
           url: https://charts.crossplane.io/stable
@@ -249,7 +249,7 @@ mixins:
   # need to install the kube mixin AFTER the helm3 one in order to leave the image with a semi
   # working kubectl. There is still a layer with kubectl of older persuasion in the image though
   - kubernetes:
-      clientVersion: v1.29.1 # TODO: need this to be macro
+      clientVersion: v1.29.1 # TODO: https://github.com/nirmata/backstack-internal/issues/42 need this to be macro
 
 install:
   # Kubernetes
@@ -326,7 +326,7 @@ install:
   - exec:
       description: "Create Crossplane Registry Secret"
       command: ./helpers.sh
-      # TODO: document the need for registry permissions for the Github Token
+      # TODO: https://github.com/nirmata/backstack-internal/issues/43 document the need for registry permissions for the Github Token
       arguments:
         - create_registry_secret
         - registry-credentials
@@ -416,7 +416,7 @@ install:
       manifests:
         - ./manifests/crossplane/backstack.yaml-envsub
   - exec:
-      # TODO: this currently deploys more than just crossplane secrets. modify function to take a name
+      # TODO: https://github.com/nirmata/backstack-internal/issues/44 this currently deploys more than just crossplane secrets. modify function to take a name
       description: "Create Crossplane Cloud Credential Secrets"
       command: ./helpers.sh
       arguments:
@@ -462,7 +462,7 @@ install:
         - ./manifests/backstage/backstage-clusterrole-binding.yaml
 
   # ArgoCD
-  # TODO: there should be a better way we overwrite the argocd-cm with the needed dex.cfg bits for auth
+  # TODO: https://github.com/nirmata/backstack-internal/issues/45 there should be a better way we overwrite the argocd-cm with the needed dex.cfg bits for auth
   - exec:
       description: "Template ArgoCD dex.cfg"
       command: ./helpers.sh
@@ -527,8 +527,8 @@ install:
       manifests:
         - ./manifests/kyverno/kyverno-kubeconfig-gen-policy.yaml
 
-  # TODO: step argo-kyverno-custom-policies
-  # TODO: step kyverno-custom-policies
+  # TODO: https://github.com/nirmata/backstack-internal/issues/46 step argo-kyverno-custom-policies
+  # TODO: https://github.com/nirmata/backstack-internal/issues/47 step kyverno-custom-policies
 
   # Post install validations
   - exec:
@@ -557,7 +557,7 @@ upgrade:
         - upgrade
 
 uninstall:
-  # TODO: Need to add a cleanup step for all the SPOKE resources? or point to documents that
+  # TODO: https://github.com/nirmata/backstack-internal/issues/48 Need to add a cleanup step for all the SPOKE resources? or point to documents that
   # explain what the expected process is
   - exec:
       description: "Check if installed on KinD"

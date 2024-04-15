@@ -1,10 +1,10 @@
 ingress:
   enabled: true
-  # TODO: make the below configurable
+  # TODO: https://github.com/nirmata/backstack-internal/issues/52 make the below configurable
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-  # TODO: make the below configurable
+  # TODO: https://github.com/nirmata/backstack-internal/issues/53 make the below configurable
   tls:
     enabled: true
     secretName: backstage-tls

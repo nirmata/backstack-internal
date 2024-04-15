@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/
     apt-get update && apt-get install -y ca-certificates curl awscli gettext-base
 
 # Install KinD
-# TODO: need to get the version as a macro
+# TODO: https://github.com/nirmata/backstack-internal/issues/49 need to get the version as a macro
 RUN curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64 && \
     chmod +x ./kind && \
     mv ./kind /usr/local/bin/kind

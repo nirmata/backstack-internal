@@ -1,4 +1,4 @@
-# TODO: need to figure out if these should live in main repo/request repo/or be configurable
+# TODO: https://github.com/nirmata/backstack-internal/issues/50 need to figure out if these should live in main repo/request repo/or be configurable
 apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:

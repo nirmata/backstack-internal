@@ -22,7 +22,7 @@ data:
               - url: https://cloud-native.slack.com/archives/C066BJRLS4B
                 title: '#backstack'
     auth: {}
-      # TODO: figure out how to best allow for setting these: https://github.com/backstage/backstage/blob/16ef9e59e5c735f13b3468abd52748321fd55937/app-config.yaml#L314
+      # TODO: https://github.com/nirmata/backstack-internal/issues/34 figure out how to best allow for setting these: https://github.com/backstage/backstage/blob/16ef9e59e5c735f13b3468abd52748321fd55937/app-config.yaml#L314
     backend:
       baseUrl: https://${BACKSTAGE_HOST}
       cors:
