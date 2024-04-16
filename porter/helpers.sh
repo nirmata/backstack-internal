@@ -17,10 +17,14 @@ create_registry_secret(){
   kubectl create secret docker-registry $1 -n $2 --docker-server=${REGISTRY} --docker-username=${GITHUB_TOKEN_USER} --docker-password=${GITHUB_TOKEN} --docker-email=backstack-noop@backstack.dev --dry-run=client -o yaml | kubectl apply -f -
 }
 
+# TODO: these two need to be re-worked to single function
 validate_providers() {
   for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-gke}}; do
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
   done
+}
+validate_ingress() {
+  kubectl wait validate.nginx.ingress.kubernetes.io --for='condition=healthy' --timeout=5m
 }
 
 validate_back_stack_configuration() {
