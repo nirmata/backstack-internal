@@ -321,6 +321,11 @@ install:
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
+  - exec:
+      description: "Validate ingress-nginx resources"
+      command: ./helpers.sh
+      arguments:
+        - validate_ingress
 
   # Crossplane
   - exec:
