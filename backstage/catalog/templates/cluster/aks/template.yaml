@@ -19,7 +19,7 @@ spec:
         cluster_id:
           title: Cluster ID
           type: string
-          description: ID of this Cluster that other objects will use to refer to it.
+          description: ID of this Cluster that other objects will use to refer to it. NOTE - spoke- will be prepended for you
         region:
           title: Region
           type: string
