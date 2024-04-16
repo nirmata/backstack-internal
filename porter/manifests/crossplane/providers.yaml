@@ -96,3 +96,11 @@ metadata:
 spec:
   package: xpkg.upbound.io/upbound/provider-gcp-gke:v1.0.2
   skipDependencyResolution: true
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-container
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-container:v1.0.2
+  skipDependencyResolution: true
