@@ -74,7 +74,7 @@ credentials:
   - name: backstage-custom-app-config
     required: false
     env: BACKSTAGE_CUSTOM_APP_CONFIG
-    description: Custom Backstage app-config.yaml which will take presedence over built in BACK stack app-config.yaml values
+    description: Custom Backstage app-config.yaml which will take precedence over built in BACK stack app-config.yaml values
     path: ./manifests/backstage/user-supplied-app-config.yaml
     applyTo:
       - install
