@@ -1,9 +1,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xnetworks.aws.caas.upbound.io
+  name: xnetworks.aws.caas.backstack.dev
 spec:
-  group: aws.caas.upbound.io
+  group: aws.caas.backstack.dev
   names:
     kind: XNetwork
     plural: xnetworks

@@ -11,7 +11,7 @@ spec:
     kind: XEKSCluster
   resources:
     - base:
-        apiVersion: aws.caas.upbound.io/v1alpha1
+        apiVersion: aws.caas.backstack.dev/v1alpha1
         kind: XNetwork
       patches:
         - fromFieldPath: spec.parameters.id
@@ -27,7 +27,7 @@ spec:
             fromFieldPath: Required
       name: compositeNetworkEKS
     - base:
-        apiVersion: aws.caas.upbound.io/v1alpha1
+        apiVersion: aws.caas.backstack.dev/v1alpha1
         kind: XEKS
       connectionDetails:
         - fromConnectionSecretKey: kubeconfig
