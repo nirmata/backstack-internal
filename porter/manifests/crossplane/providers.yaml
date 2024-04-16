@@ -94,7 +94,7 @@ kind: Provider
 metadata:
   name: upbound-provider-gcp-gke
 spec:
-  package: xpkg.upbound.io/upbound/provider-gcp-gke:v1.0.2
+  package: xpkg.upbound.io/upbound/provider-gcp-compute:v1.0.2
   skipDependencyResolution: true
 ---
 apiVersion: pkg.crossplane.io/v1

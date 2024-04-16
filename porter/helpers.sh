@@ -19,7 +19,7 @@ create_registry_secret(){
 
 # TODO: these two need to be re-worked to single function
 validate_providers() {
-  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-{gke,container}}}; do
+  for provider in {crossplane-contrib-provider-{helm,kubernetes},upbound-provider-{family-{aws,azure,gcp},aws-{ec2,eks,iam},azure-{containerservice,network},gcp-{compute,container}}}; do
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
   done
 }
