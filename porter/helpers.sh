@@ -28,8 +28,7 @@ validate_back_stack_configuration() {
 }
 
 deploy_secrets() {
-  # TODO: https://github.com/nirmata/backstack-internal/issues/35 This function needs to be re-wroked and allow for passing in what we want to create
-  # or just move all of this to a kubernetes manifest mixin
+  # TODO: https://github.com/nirmata/backstack-internal/issues/35 This function needs to be re-wroked and allow for passing in what we want to create or just move all of this to a kubernetes manifest mixin
   ensure_namespace argocd
   kubectl apply -f - <<-EOF
     apiVersion: v1

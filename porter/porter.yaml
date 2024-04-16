@@ -97,20 +97,20 @@ credentials:
   - name: custom-ingress-controller-annotations
     required: false
     description: If you would like to overwrite the default ingress-nginx annotations. Usually necessary when deploying to custom environments
-    env: ${CUSTOM_INGRESS_CONTROLLER_ANNOTATIONS}
+    env: $CUSTOM_INGRESS_CONTROLLER_ANNOTATIONS
     path: ./manifests/ingress-nginx/values-${bundle.parameters.cluster-type}.yaml
     applyTo:
       - install
   - name: kyverno-hub-custom-policies-repository
     required: false
     description: Repository with custom HUB Kyverno policies to be installed
-    env: ${KYVERNO_HUB_CUSTOM_POLICIES_REPOSITORY}
+    env: KYVERNO_HUB_CUSTOM_POLICIES_REPOSITORY
     applyTo:
       - install
   - name: kyverno-spoke-custom-policies-repository
     required: false
     description: Repository with custom SPOKE Kyverno policies to be installed
-    env: ${KYVERNO_SPOKE_CUSTOM_POLICIES_REPOSITORY}
+    env: KYVERNO_SPOKE_CUSTOM_POLICIES_REPOSITORY
     applyTo:
       - install
 
