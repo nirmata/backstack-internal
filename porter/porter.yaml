@@ -321,11 +321,12 @@ install:
           resourceName: ingress-nginx-controller
           namespace: ingress-nginx
           jsonPath: "{.status.loadBalancer.ingress}"
+  # FIXME: this is so the pods have enough time to stand up before continuing. need a better way to do this
   - exec:
       description: "Validate ingress-nginx resources"
-      command: ./helpers.sh
+      command: sleep
       arguments:
-        - validate_ingress
+        - 30
 
   # Crossplane
   - exec:

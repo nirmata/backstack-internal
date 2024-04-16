@@ -23,10 +23,6 @@ validate_providers() {
     kubectl wait providers.pkg.crossplane.io/${provider} --for='condition=healthy' --timeout=5m
   done
 }
-validate_ingress() {
-  kubectl wait ingresses.networking.k8s.io --for='condition=healthy' --timeout=5m
-  kubectl wait ingressclasses.networking.k8s.io --for='condition=healthy' --timeout=5m
-}
 
 validate_back_stack_configuration() {
   kubectl wait configuration/backstack --for='condition=healthy' --timeout=10m
