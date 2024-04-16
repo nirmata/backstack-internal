@@ -50,7 +50,11 @@ jobs:
         run: |
           porter mixin install docker --version $PORTER_MIXIN_DOCKER_VERSION && porter mixin install kubernetes --version $PORTER_MIXIN_KUBERNETES_VERSION && porter mixin install helm3 --feed-url $PORTER_MIXIN_HELM_URL --version $PORTER_MIXIN_HELM_VERSION
 
-      - name: Build Porter bundle
+      - name: Lint the bundle
+        run: |
+          porter bundle lint -f porter/porter.yaml
+
+      - name: Build porter bundle
         run: |
           porter build --dir porter --name ${{ env.IMAGE_NAME }}-porter --version ${{vars.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
 
