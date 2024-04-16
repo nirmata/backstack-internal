@@ -24,7 +24,8 @@ validate_providers() {
   done
 }
 validate_ingress() {
-  kubectl wait validate.nginx.ingress.kubernetes.io --for='condition=healthy' --timeout=5m
+  kubectl wait ingresses.networking.k8s.io --for='condition=healthy' --timeout=5m
+  kubectl wait ingressclasses.networking.k8s.io --for='condition=healthy' --timeout=5m
 }
 
 validate_back_stack_configuration() {
