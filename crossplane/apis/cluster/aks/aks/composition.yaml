@@ -38,9 +38,9 @@ spec:
         string:
           fmt: "%s-aks"
     - fromFieldPath: spec.parameters.id
-      toFieldPath: spec.forProvider.resourceGroupNameSelector.matchLabels[azure.caas.backstack.dev/network-id]
+      toFieldPath: spec.forProvider.resourceGroupNameSelector.matchLabels[azure.backstack.dev/network-id]
     - fromFieldPath: spec.parameters.id
-      toFieldPath: spec.forProvider.defaultNodePool[0].vnetSubnetIdSelector.matchLabels[azure.caas.backstack.dev/network-id]
+      toFieldPath: spec.forProvider.defaultNodePool[0].vnetSubnetIdSelector.matchLabels[azure.backstack.dev/network-id]
     - fromFieldPath: spec.parameters.id
       toFieldPath: spec.forProvider.dnsPrefix
     - fromFieldPath: spec.parameters.nodes.instanceType

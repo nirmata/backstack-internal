@@ -32,7 +32,7 @@ spec:
             enableDnsHostnames: true
             tags:
               Name: ""
-      name: caas-vcp
+      name: spoke-vcp
       patches:
         - type: PatchSet
           patchSetName: network-id

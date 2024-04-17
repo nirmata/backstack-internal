@@ -15,7 +15,7 @@ spec:
     patches:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.id
-      toFieldPath: metadata.labels[azure.caas.backstack.dev/network-id]
+      toFieldPath: metadata.labels[azure.backstack.dev/network-id]
   - name: region
     patches:
     - type: FromCompositeFieldPath
