@@ -41,13 +41,6 @@ spec:
                   version:
                     description: Kubernetes version
                     type: string
-                    enum:
-                    - "1.29"
-                    - "1.28"
-                    - "1.27"
-                    - "1.26"
-                    - "1.25"
-                    - "1.24"
                     default: "1.29"
                   subnetIds:
                     type: array
