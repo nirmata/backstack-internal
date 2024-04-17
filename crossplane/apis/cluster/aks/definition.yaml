@@ -44,7 +44,7 @@ spec:
                     default: basic
                   version:
                     type: string
-                    description: Kubernetes version of the Cluster
+                    description: Kubernetes version to install, find latest https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions
                     default: "1.29.2"
                   nodes:
                     type: object

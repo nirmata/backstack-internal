@@ -32,15 +32,7 @@ spec:
           title: Version
           type: string
           description: Kubernetes version to install, find latest https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
-          # TODO: https://github.com/nirmata/backstack-internal/issues/25 need to figure out a good way to keep these in sync or not require them alltogether
-          # default: "1.28"
-          # enum:
-          #   - "1.29"
-          #   - "1.28"
-          #   - "1.27"
-          #   - "1.26"
-          #   - "1.25"
-          #   - "1.24"
+          default: "1.29"
         nodes_count:
           title: Node Group Size
           type: integer

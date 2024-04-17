@@ -31,7 +31,7 @@ spec:
                     type: string
                     description: Region is the region you'd like your resource to be created in.
                   version:
-                    description: Kubernetes version
+                    description: Kubernetes version to install, find latest https://learn.microsoft.com/en-us/azure/aks/supported-kubernetes-versions
                     type: string
                     default: "1.29.2"
                   nodes:
