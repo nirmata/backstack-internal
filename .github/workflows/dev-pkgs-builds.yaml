@@ -61,7 +61,7 @@ jobs:
         run: |
           porter build --dir porter --name ${{ env.IMAGE_NAME }}-porter-unstable --version ${{vars.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
 
-      - name: Publish Porter porter
+      - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
           porter publish --dir porter
           porter publish --dir porter --tag latest --force
@@ -153,7 +153,7 @@ jobs:
           cmd: build-image --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:latest
 
       # Use docker push command directly to work with docker login action.
-      - name: Push the image
+      - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:${{vars.BACK_STACK_VERSION}}_${{ steps.tag.outputs.VERSION_TAG }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backstage-unstable:latest

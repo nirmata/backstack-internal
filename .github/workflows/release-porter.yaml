@@ -58,7 +58,7 @@ jobs:
         run: |
           porter build --dir porter --name ${{ env.IMAGE_NAME }}-porter --version ${{vars.BACK_STACK_VERSION}}+${{ steps.tag.outputs.VERSION_TAG }}
 
-      - name: Publish Porter bundle
+      - name: Push ${{ steps.tag.outputs.VERSION_TAG }} & latest
         run: |
           porter publish --dir porter
           porter publish --dir porter --tag latest --force
