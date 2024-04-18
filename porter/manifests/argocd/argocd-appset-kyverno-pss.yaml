@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: kyverno-policies
+  name: kyverno-pss-policies
   namespace: argocd
 spec:
   generators:
@@ -11,7 +11,7 @@ spec:
           clusterType: spoke
   template:
     metadata:
-      name: '{{name}}-kyverno-policies'
+      name: '{{name}}-kyverno-pss-policies'
       annotations:
         argocd.argoproj.io/sync-wave: "-1"
     spec:

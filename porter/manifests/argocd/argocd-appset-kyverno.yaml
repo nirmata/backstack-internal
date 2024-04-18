@@ -22,8 +22,6 @@ spec:
         path: charts/kyverno
         helm:
           releaseName: "{{name}}-kyverno"
-          # valueFiles:
-          # - "values.yaml"
       destination:
         server: '{{server}}'
         namespace: kyverno
