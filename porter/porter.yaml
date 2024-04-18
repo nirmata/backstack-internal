@@ -51,6 +51,7 @@ credentials:
     applyTo:
       - install
   - name: kubeconfig
+    env: K8S_CFG_INTERNAL
     path: /home/nonroot/.kube/config
     description: Local Kubeconfig file to use for HUB installation. Skip if using KinD
     required: false

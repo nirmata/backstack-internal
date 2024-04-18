@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 # This is internal to the container, it does not relate to local system paths
-K8S_CFG_INTERNAL=/home/nonroot/.kube/config
-# This is internal to the container, it does not relate to local system paths
-K8S_CFG_EXTERNAL=/home/nonroot/.kube/config-external
-CLUSTER_NAME=${KIND_CLUSTER_NAME}
+K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
 
 do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
@@ -90,17 +88,17 @@ ensure_namespace() {
 
 ensure_kubernetes() {
   if [ "$CLUSTER_TYPE" = "kind" ]; then
-    if $(kind get clusters | grep -q ${CLUSTER_NAME}); then
+    if $(kind get clusters | grep -q ${KIND_CLUSTER_NAME}); then
       echo KinD Cluster Exists
-      kind export kubeconfig --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL}
-      kind export kubeconfig --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
+      kind export kubeconfig --name ${KIND_CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL}
+      kind export kubeconfig --name ${KIND_CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
     else
       echo Create KinD Cluster
-      kind create cluster --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL} --config=./kind.cluster.config --wait=40s
-      kind export kubeconfig --name ${CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
+      kind create cluster --name ${KIND_CLUSTER_NAME} --kubeconfig=${K8S_CFG_INTERNAL} --config=./kind.cluster.config --wait=40s
+      kind export kubeconfig --name ${KIND_CLUSTER_NAME} --kubeconfig=${K8S_CFG_EXTERNAL}
     fi
     docker network connect kind ${HOSTNAME}
-    KIND_DIND_IP=$(docker inspect -f "{{ .NetworkSettings.Networks.kind.IPAddress }}" ${CLUSTER_NAME}-control-plane)
+    KIND_DIND_IP=$(docker inspect -f "{{ .NetworkSettings.Networks.kind.IPAddress }}" ${KIND_CLUSTER_NAME}-control-plane)
     sed -i -e "s@server: .*@server: https://${KIND_DIND_IP}:6443@" ${K8S_CFG_INTERNAL}
   # TODO: https://github.com/nirmata/backstack-internal/issues/37 look at utilizing the aws mixin instead of doing all of this
   # TODO: if the above works, remove the awscli from the dockerfile tempalte
@@ -136,7 +134,7 @@ upgrade() {
 
 uninstall() {
   if [ "$CLUSTER_TYPE" = "kind" ]; then
-    kind delete cluster --name ${CLUSTER_NAME}
+    kind delete cluster --name ${KIND_CLUSTER_NAME}
     exit 0
   else
     echo !!!====================================!!!\n
