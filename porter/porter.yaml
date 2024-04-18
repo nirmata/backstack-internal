@@ -208,12 +208,12 @@ parameters:
 outputs:
   - name: kubeconfig
     type: file
-    path: /home/nonroot/.kube/config
+    path: ${bundle.credentials.kubeconfig}
     applyTo:
       - install
   - name: kubeconfig-external
     type: file
-    path: /home/nonroot/.kube/config-external
+    path: ${bundle.credentials.kubeconfig}-external
     applyTo:
       - install
   - name: ingress
