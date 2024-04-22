@@ -2,7 +2,13 @@
 set -euo pipefail
 
 # This is internal to the container, it does not relate to local system paths
-K8S_CFG_EXTERNAL="${K8S_CFG_INTERNAL}-external"
+# Check if the credential is set, weirdly Porter doesnt add the ENV unless the cred is actually
+# defined in the credentials file
+if [ -z ${K8S_CFG_INTERNAL+x} ]; then
+  K8S_CFG_EXTERNAL="/home/nonroot/.kube/config-external"
+else
+  K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
+fi
 
 do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
