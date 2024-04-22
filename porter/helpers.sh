@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # This is internal to the container, it does not relate to local system paths
-K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
+K8S_CFG_EXTERNAL="${K8S_CFG_INTERNAL}-external"
 
 do_envsubst_on_file() {
   envsubst < $1 > $1-envsub
