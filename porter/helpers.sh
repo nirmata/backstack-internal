@@ -6,6 +6,7 @@ set -euo pipefail
 # defined in the credentials file
 if [ -z ${K8S_CFG_INTERNAL+x} ]; then
   K8S_CFG_INTERNAL="/home/nonroot/.kube/config"
+  K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
 else
   K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
 fi
