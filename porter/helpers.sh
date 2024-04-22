@@ -5,7 +5,7 @@ set -euo pipefail
 # Check if the credential is set, weirdly Porter doesnt add the ENV unless the cred is actually
 # defined in the credentials file
 if [ -z ${K8S_CFG_INTERNAL+x} ]; then
-  K8S_CFG_EXTERNAL="/home/nonroot/.kube/config-external"
+  K8S_CFG_INTERNAL="/home/nonroot/.kube/config"
 else
   K8S_CFG_EXTERNAL=${K8S_CFG_INTERNAL}-external
 fi
