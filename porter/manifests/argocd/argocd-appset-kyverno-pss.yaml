@@ -27,7 +27,7 @@ spec:
             - name: "podSecurityStandard"
               value: restricted
             - name: "validationFailureAction"
-              value: Enforce
+              value: Audit
             - name: "podSecuritySeverity"
               value: High
       destination:
